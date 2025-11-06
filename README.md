@@ -1,7 +1,6 @@
 <p align="center">
   <img src="banner_adecco.png" alt="HueteDevs banner" width="750" />
 </p>
-# 🐍 Proyecto: Cartelera de Cine 🎬
 
 _🎥 La magia del cine… programada en Python 🐍🍿_
 
