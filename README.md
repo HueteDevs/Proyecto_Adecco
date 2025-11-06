@@ -30,6 +30,8 @@ Próximamente incluiremos instrucciones claras sobre cómo ejecutar la cartelera
 ## 🛠️ Tecnologías utilizadas
 
 * Python 3
+* SQLAlchemy (ORM)
+* SQLite (Base de datos)
 * Programación orientada a objetos (POO)
 * Estructuras de datos
 
