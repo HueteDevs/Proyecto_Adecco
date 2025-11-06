@@ -1,5 +1,7 @@
 # 🐍 Proyecto: Cartelera de Cine 🎬
 
+_🎥 La magia del cine… programada en Python 🐍🍿_
+
 Bienvenido al repositorio de **Cartelera de Cine**, un proyecto desarrollado en Python cuya finalidad es gestionar y mostrar una cartelera digital de películas.
 
 ## 🎯 Finalidad del Proyecto
