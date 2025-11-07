@@ -10,20 +10,20 @@ class Pelicula(BaseModel):
     genero: str
     en_cartelera: bool
     
-class Salas(BaseModel):
+class Sala(BaseModel):
     nombre: str
     capacidad: int
     tipo: str
     precio: float
     disponible: bool
     
-class Horarios(BaseModel):
+class Horario(BaseModel):
     pelicula_id: int
     sala_id: int
     hora: str
     disponible: bool
     
-class Ventas(BaseModel):
+class Venta(BaseModel):
     pelicula_id: int
     horario_id: int
     sala_id: int
@@ -31,7 +31,7 @@ class Ventas(BaseModel):
     total: float
     metodo_pago: str
     
-class Generos(BaseModel):
+class Genero(BaseModel):
     pelicula_id: int
     nombre: str
     descripcion: str
@@ -141,5 +141,6 @@ try:
         db.commit() 
 finally:
     db.close()
+
 
 
