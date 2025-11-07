@@ -2,7 +2,6 @@ from fastapi import FastAPI
 from pydantic import BaseModel
 from sqlalchemy.orm import DeclarativeBase, mapped_column, Mapped, sessionmaker
 from sqlalchemy import String, Integer, Float, Boolean, create_engine, ForeignKey
-
 app = FastAPI()
 
 class Pelicula(BaseModel):
