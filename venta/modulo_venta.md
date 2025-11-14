@@ -124,9 +124,9 @@ Actualización parcial, todos los campos son **opcionales**:
 class VentaPatch(BaseModel):
     model_config=ConfigDigit(from_attributes=True)
 
-    horario_id:int
-    cantidad:int
-    metodo_pago:MetodoPago
+    horario_id: int | None
+    cantidad: int | None
+    metodo_pago: MetodoPago | None
 ```
 ## 5. Endpoints del CRUD
 
