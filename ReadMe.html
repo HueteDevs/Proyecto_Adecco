@@ -260,8 +260,8 @@
 │   │   ├── socios.py        # Rutas CRUD Socios
 │   │   └── login.py         # Rutas de autenticación / login
 │   ├── database/
-│   │   ├── cartelera_cine.py    # Motor de conexión SQLAlchemy
-│   │   ├── db.py                # Schema y seed de la base de datos
+│   │   ├── db.py            # Motor de conexión SQLAlchemy
+│   │   ├── db.sql               # Schema y seed de la base de datos
 │   │   └── cartelera_cine.db    # Base de datos SQLite
 │   ├── templates/
 │   │   ├── base.html        # Layout común
@@ -904,8 +904,8 @@ uvicorn app.main:app --reload
 
         <h3>1. Módulos de base de datos</h3>
         <ul>
-            <li><code>app/database/cartelera_cine.py</code> — configuración de la conexión SQLAlchemy.</li>
-            <li><code>app/database/db.py</code> — creación de tablas y carga inicial de datos (seed).</li>
+            <li><code>app/database/db.py</code> — configuración de la conexión SQLAlchemy.</li>
+            <li><code>app/database/db.sql</code> — creación de tablas y carga inicial de datos (seed).</li>
         </ul>
 
         <h3>2. Crear o recrear la base de datos</h3>
