@@ -1,169 +1,167 @@
-<!DOCTYPE html>
+Añademe al titulo esta imagen centrada a este readme.html: <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
+    <meta charset="utf-8" />
     <title>🎥 Cartelera de Cine en Python</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="Proyecto Cartelera de Cine en Python: gestión de películas, horarios, salas, ventas, géneros, login y socios." />
     <style>
-    body {
-        font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-        line-height: 1.6;
-        margin: 0;
-        padding: 0;
-        background: #f5f7fb;            /* Fondo claro corporativo */
-        color: #1f2933;                 /* Texto gris oscuro legible */
-    }
-    header {
-        background: linear-gradient(135deg, #0d47a1, #1565c0); /* Azul corporativo */
-        padding: 2.5rem 1.5rem;
-        text-align: center;
-        border-bottom: 3px solid #0056b3;                       /* Azul más intenso */
-        color: #ffffff;
-    }
-    header h1 {
-        margin: 0;
-        font-size: 2.2rem;
-    }
-    header p {
-        margin: 0.5rem 0 0;
-        font-size: 1rem;
-        color: #e3f2fd;
-    }
-    main {
-        max-width: 980px;
-        margin: 0 auto;
-        padding: 2rem 1.5rem 3rem;
-    }
-    h2, h3, h4 {
-        color: #0056b3;              /* Azul empresarial */
-        margin-top: 2rem;
-    }
-    h2 {
-        border-bottom: 1px solid #d0d7e2;
-        padding-bottom: 0.3rem;
-    }
-    h3 {
-        margin-top: 1.5rem;
-    }
-    h4 {
-        margin-top: 1rem;
-    }
-    p {
-        margin: 0.5rem 0;
-    }
-    ul {
-        margin: 0.3rem 0 0.8rem 1.2rem;
-    }
-    li {
-        margin-bottom: 0.2rem;
-    }
-    .tag {
-        display: inline-block;
-        background: #e8f1ff;           /* Azul muy claro */
-        color: #0056b3;
-        border-radius: 999px;
-        padding: 0.1rem 0.75rem;
-        font-size: 0.8rem;
-        border: 1px solid #b3c7f2;
-        margin-right: 0.35rem;
-        margin-bottom: 0.35rem;
-    }
-    .card {
-        border-radius: 0.75rem;
-        border: 1px solid #d0d7e2;
-        background: #ffffff;           /* Tarjeta fondo blanco */
-        padding: 1.25rem 1.25rem 1rem;
-        margin-top: 1.5rem;
-        box-shadow: 0 4px 10px rgba(15, 23, 42, 0.06);
-    }
-    .entity-header {
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: space-between;
-        gap: 0.5rem;
-        align-items: baseline;
-        margin-bottom: 0.7rem;
-    }
-    .entity-header h3 {
-        margin: 0;
-    }
-    .entity-owner {
-        font-size: 0.85rem;
-        color: #6b7280;             /* Gris medio */
-    }
-    .section-label {
-        font-size: 0.85rem;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        color: #6b7280;
-        margin-bottom: 0.25rem;
-    }
-    .relations-table {
-        width: 100%;
-        border-collapse: collapse;
-        margin-top: 0.75rem;
-        font-size: 0.9rem;
-    }
-    .relations-table th,
-    .relations-table td {
-        border: 1px solid #d0d7e2;
-        padding: 0.4rem 0.5rem;
-        text-align: left;
-    }
-    .relations-table th {
-        background: #e8f1ff;
-        color: #0056b3;
-    }
-    code {
-        font-family: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-        font-size: 0.9em;
-        background: #f3f4f6;           /* Gris claro sobre fondo blanco */
-        padding: 0.1rem 0.25rem;
-        border-radius: 0.25rem;
-        color: #111827;
-    }
-    pre { /* Estilo para bloques de código */
-        background: #f3f4f6;
-        padding: 1rem;
-        border-radius: 0.5rem;
-        overflow-x: auto;
-        font-size: 0.9em;
-        line-height: 1.4;
-    }
-    pre code {
-        background: none;
-        padding: 0;
-        border-radius: 0;
-    }
-    footer {
-        text-align: center;
-        padding: 1.5rem 1rem 2rem;
-        font-size: 0.85rem;
-        color: #6b7280;
-        border-top: 1px solid #e5e7eb;
-        background: #ffffff;
-    }
-    a {
-        color: #0056b3;
-    }
-    a:hover {
-        color: #1d4ed8;
-    }
-    .subtle {
-        color: #6b7280;
-        font-size: 0.9rem;
-    }
-    @media (max-width: 640px) {
-        main {
-            padding: 1.5rem 1rem 2.5rem;
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            background: #f5f7fb;            /* Fondo claro corporativo */
+            color: #1f2933;                 /* Texto gris oscuro legible */
         }
-    }
-</style>
-
+        header {
+            background: linear-gradient(135deg, #0d47a1, #1565c0); /* Azul corporativo */
+            padding: 2.5rem 1.5rem;
+            text-align: center;
+            border-bottom: 3px solid #0056b3;                       /* Azul más intenso */
+            color: #ffffff;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.2rem;
+        }
+        header p {
+            margin: 0.5rem 0 0;
+            font-size: 1rem;
+            color: #e3f2fd;
+        }
+        main {
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 2rem 1.5rem 3rem;
+        }
+        h2, h3, h4 {
+            color: #0056b3;              /* Azul empresarial */
+            margin-top: 2rem;
+        }
+        h2 {
+            border-bottom: 1px solid #d0d7e2;
+            padding-bottom: 0.3rem;
+        }
+        h3 {
+            margin-top: 1.5rem;
+        }
+        h4 {
+            margin-top: 1rem;
+        }
+        p {
+            margin: 0.5rem 0;
+        }
+        ul {
+            margin: 0.3rem 0 0.8rem 1.2rem;
+        }
+        li {
+            margin-bottom: 0.2rem;
+        }
+        .tag {
+            display: inline-block;
+            background: #e8f1ff;           /* Azul muy claro */
+            color: #0056b3;
+            border-radius: 999px;
+            padding: 0.1rem 0.75rem;
+            font-size: 0.8rem;
+            border: 1px solid #b3c7f2;
+            margin-right: 0.35rem;
+            margin-bottom: 0.35rem;
+        }
+        .card {
+            border-radius: 0.75rem;
+            border: 1px solid #d0d7e2;
+            background: #ffffff;           /* Tarjeta fondo blanco */
+            padding: 1.25rem 1.25rem 1rem;
+            margin-top: 1.5rem;
+            box-shadow: 0 4px 10px rgba(15, 23, 42, 0.06);
+        }
+        .entity-header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            gap: 0.5rem;
+            align-items: baseline;
+            margin-bottom: 0.7rem;
+        }
+        .entity-header h3 {
+            margin: 0;
+        }
+        .entity-owner {
+            font-size: 0.85rem;
+            color: #6b7280;             /* Gris medio */
+        }
+        .section-label {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #6b7280;
+            margin-bottom: 0.25rem;
+        }
+        .relations-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+        }
+        .relations-table th,
+        .relations-table td {
+            border: 1px solid #d0d7e2;
+            padding: 0.4rem 0.5rem;
+            text-align: left;
+        }
+        .relations-table th {
+            background: #e8f1ff;
+            color: #0056b3;
+        }
+        code {
+            font-family: "JetBrains Mono", "Fira Code", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+            font-size: 0.9em;
+            background: #f3f4f6;           /* Gris claro sobre fondo blanco */
+            padding: 0.1rem 0.25rem;
+            border-radius: 0.25rem;
+            color: #111827;
+        }
+        pre { /* Estilo para bloques de código */
+            background: #f3f4f6;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            overflow-x: auto;
+            font-size: 0.9em;
+            line-height: 1.4;
+        }
+        pre code {
+            background: none;
+            padding: 0;
+            border-radius: 0;
+        }
+        footer {
+            text-align: center;
+            padding: 1.5rem 1rem 2rem;
+            font-size: 0.85rem;
+            color: #6b7280;
+            border-top: 1px solid #e5e7eb;
+            background: #ffffff;
+        }
+        a {
+            color: #0056b3;
+        }
+        a:hover {
+            color: #1d4ed8;
+        }
+        .subtle {
+            color: #6b7280;
+            font-size: 0.9rem;
+        }
+        @media (max-width: 640px) {
+            main {
+                padding: 1.5rem 1rem 2.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-
 <header role="banner">
     <h1>🎥 Cartelera de Cine en Python</h1>
     <p>La magia del cine… programada en Python 🐍🍿</p>
@@ -238,10 +236,54 @@
         </p>
     </section>
 
+    <section id="estructura" aria-labelledby="estructura-heading">
+        <h2 id="estructura-heading">📁 Estructura del Proyecto</h2>
+        <p>A continuación se detalla la estructura recomendada del proyecto Cartelera de Cine en Python:</p>
+        <pre><code>.
+├── app/
+│   ├── main.py
+│   ├── models/
+│   │   ├── pelicula.py      # Entidad Pelicula
+│   │   ├── genero.py        # Entidad Genero
+│   │   ├── sala.py          # Entidad Sala
+│   │   ├── horario.py       # Entidad Horario
+│   │   ├── venta.py         # Entidad Venta
+│   │   ├── socio.py         # Entidad Socio
+│   │   └── login.py         # Entidad Login / Usuario
+│   ├── routes/
+│   │   ├── peliculas.py     # Rutas CRUD Peliculas
+│   │   ├── generos.py       # Rutas CRUD Generos
+│   │   ├── salas.py         # Rutas CRUD Salas
+│   │   ├── horarios.py      # Rutas CRUD Horarios
+│   │   ├── ventas.py        # Rutas CRUD Ventas
+│   │   ├── socios.py        # Rutas CRUD Socios
+│   │   └── login.py         # Rutas de autenticación / login
+│   ├── database/
+│   │   ├── cartelera_cine.py    # Motor de conexión SQLAlchemy
+│   │   ├── db.py       # Creación y seed de la base de datos
+│   │   └── cartelera_cine.db  # Base de datos SQLite
+│   ├── templates/
+│   │   ├── base.html        # Layout común
+│   │   ├── peliculas/       # Vistas HTML de peliculas
+│   │   ├── generos/         # Vistas HTML de generos
+│   │   ├── salas/           # Vistas HTML de salas
+│   │   ├── horarios/        # Vistas HTML de horarios
+│   │   ├── ventas/          # Vistas HTML de ventas
+│   │   ├── socios/          # Vistas HTML de socios
+│   │   └── login/           # Vistas HTML de login/autenticación
+│   └── static/
+│       ├── css/
+│       ├── js/
+│       └── img/
+├── requirements.txt
+├── README.html
+└── run.py</code></pre>
+    </section>
+
     <section id="entidades" aria-labelledby="entidades-heading">
         <h2 id="entidades-heading">🎬 Entidades del Sistema</h2>
 
-        <article class="card" id="pelicula" aria-labelledby="pelicula-h3">
+        <article id="pelicula" class="card" aria-labelledby="pelicula-h3">
             <div class="entity-header">
                 <h3 id="pelicula-h3">🎞️ Pelicula</h3>
                 <span class="entity-owner">Responsable: JAVIER CACHÓN</span>
@@ -316,7 +358,7 @@
             </ul>
         </article>
 
-        <article class="card" id="sala" aria-labelledby="sala-h3">
+        <article id="sala" class="card" aria-labelledby="sala-h3">
             <div class="entity-header">
                 <h3 id="sala-h3">🏟️ Sala</h3>
                 <span class="entity-owner">Responsable: REYES</span>
@@ -368,7 +410,7 @@
             </ul>
         </article>
 
-        <article class="card" id="horario" aria-labelledby="horario-h3">
+        <article id="horario" class="card" aria-labelledby="horario-h3">
             <div class="entity-header">
                 <h3 id="horario-h3">🕒 Horario</h3>
                 <span class="entity-owner">Responsable: MANUEL</span>
@@ -438,7 +480,7 @@
             </ul>
         </article>
 
-        <article class="card" id="venta" aria-labelledby="venta-h3">
+        <article id="venta" class="card" aria-labelledby="venta-h3">
             <div class="entity-header">
                 <h3 id="venta-h3">💳 Venta</h3>
                 <span class="entity-owner">Responsable: IÑAKI</span>
@@ -489,7 +531,7 @@
             </ul>
         </article>
 
-        <article class="card" id="genero" aria-labelledby="genero-h3">
+        <article id="genero" class="card" aria-labelledby="genero-h3">
             <div class="entity-header">
                 <h3 id="genero-h3">🏷️ Género</h3>
                 <span class="entity-owner">Responsable: KARY</span>
@@ -529,7 +571,7 @@
             </ul>
         </article>
 
-        <article class="card" id="login" aria-labelledby="login-h3">
+        <article id="login" class="card" aria-labelledby="login-h3">
             <div class="entity-header">
                 <h3 id="login-h3">🔐 Login / Autenticación</h3>
                 <span class="entity-owner">Responsable: JAVIER CACHÓN</span>
@@ -582,7 +624,7 @@
             </ul>
         </article>
 
-        <article class="card" id="socio" aria-labelledby="socio-h3">
+        <article id="socio" class="card" aria-labelledby="socio-h3">
             <div class="entity-header">
                 <h3 id="socio-h3">👥 Socio / Fidelización</h3>
                 <span class="entity-owner">Responsable: JAVIER CACHÓN</span>
@@ -652,94 +694,118 @@
         <h3>2.1. Pelicula ↔ Género</h3>
         <ul>
             <li><strong>FK:</strong> <code>peliculas.genero_id → generos.id</code></li>
-            <li><strong>Cardinalidad (modelo lógico):</strong></li>
-            <ul>
-                <li>Una <strong>Pelicula</strong> pertenece a un único <strong>Genero</strong>.</li>
-                <li>Un <strong>Genero</strong> puede tener muchas <strong>Peliculas</strong>.</li>
-            </ul>
-            <li><strong>Tipo:</strong></li>
-            <ul>
-                <li>Pelicula → Genero: <strong>ManyToOne (N:1)</strong></li>
-                <li>Genero → Pelicula: <strong>OneToMany (1:N)</strong></li>
-            </ul>
+            <li>
+                <strong>Cardinalidad (modelo lógico):</strong>
+                <ul>
+                    <li>Una <strong>Pelicula</strong> pertenece a un único <strong>Genero</strong>.</li>
+                    <li>Un <strong>Genero</strong> puede tener muchas <strong>Peliculas</strong>.</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Tipo:</strong>
+                <ul>
+                    <li>Pelicula → Genero: <strong>ManyToOne (N:1)</strong></li>
+                    <li>Genero → Pelicula: <strong>OneToMany (1:N)</strong></li>
+                </ul>
+            </li>
             <li><strong>Navegación ORM típica:</strong> <code>pelicula.genero</code> y, si se define, <code>genero.peliculas</code></li>
         </ul>
 
         <h3>2.2. Horario ↔ Pelicula</h3>
         <ul>
             <li><strong>FK:</strong> <code>horarios.pelicula_id → peliculas.id</code></li>
-            <li><strong>Cardinalidad (modelo lógico):</strong></li>
-            <ul>
-                <li>Un <strong>Horario</strong> corresponde a una <strong>Pelicula</strong> concreta.</li>
-                <li>Una <strong>Pelicula</strong> puede tener muchos <strong>Horarios</strong> (1:N).</li>
-            </ul>
-            <li><strong>Tipo:</strong></li>
-            <ul>
-                <li>Horario → Pelicula: <strong>ManyToOne (N:1)</strong></li>
-                <li>Pelicula → Horario: <strong>OneToMany (1:N)</strong> (a nivel de diseño de datos)</li>
-            </ul>
+            <li>
+                <strong>Cardinalidad (modelo lógico):</strong>
+                <ul>
+                    <li>Un <strong>Horario</strong> corresponde a una <strong>Pelicula</strong> concreta.</li>
+                    <li>Una <strong>Pelicula</strong> puede tener muchos <strong>Horarios</strong> (1:N).</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Tipo:</strong>
+                <ul>
+                    <li>Horario → Pelicula: <strong>ManyToOne (N:1)</strong></li>
+                    <li>Pelicula → Horario: <strong>OneToMany (1:N)</strong> (a nivel de diseño de datos)</li>
+                </ul>
+            </li>
             <li><strong>Navegación ORM implementada:</strong> solo <code>horario.pelicula</code> (no se implementa <code>pelicula.horarios</code> en el modelo actual).</li>
         </ul>
 
         <h3>2.3. Horario ↔ Sala</h3>
         <ul>
             <li><strong>FK:</strong> <code>horarios.sala_id → salas.id</code></li>
-            <li><strong>Cardinalidad:</strong></li>
-            <ul>
-                <li>Un <strong>Horario</strong> se proyecta en una sola <strong>Sala</strong>.</li>
-                <li>Una <strong>Sala</strong> puede tener muchos <strong>Horarios</strong>.</li>
-            </ul>
-            <li><strong>Tipo:</strong></li>
-            <ul>
-                <li>Horario → Sala: <strong>ManyToOne (N:1)</strong></li>
-                <li>Sala → Horario: <strong>OneToMany (1:N)</strong></li>
-            </ul>
+            <li>
+                <strong>Cardinalidad:</strong>
+                <ul>
+                    <li>Un <strong>Horario</strong> se proyecta en una sola <strong>Sala</strong>.</li>
+                    <li>Una <strong>Sala</strong> puede tener muchos <strong>Horarios</strong>.</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Tipo:</strong>
+                <ul>
+                    <li>Horario → Sala: <strong>ManyToOne (N:1)</strong></li>
+                    <li>Sala → Horario: <strong>OneToMany (1:N)</strong></li>
+                </ul>
+            </li>
         </ul>
 
         <h3>2.4. Venta ↔ Horario</h3>
         <ul>
             <li><strong>FK:</strong> <code>ventas.horario_id → horarios.id</code></li>
-            <li><strong>Cardinalidad:</strong></li>
-            <ul>
-                <li>Una <strong>Venta</strong> está asociada a un solo <strong>Horario</strong>.</li>
-                <li>Un <strong>Horario</strong> puede tener muchas <strong>Ventas</strong>.</li>
-            </ul>
-            <li><strong>Tipo:</strong></li>
-            <ul>
-                <li>Venta → Horario: <strong>ManyToOne (N:1)</strong></li>
-                <li>Horario → Venta: <strong>OneToMany (1:N)</strong></li>
-            </ul>
+            <li>
+                <strong>Cardinalidad:</strong>
+                <ul>
+                    <li>Una <strong>Venta</strong> está asociada a un solo <strong>Horario</strong>.</li>
+                    <li>Un <strong>Horario</strong> puede tener muchas <strong>Ventas</strong>.</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Tipo:</strong>
+                <ul>
+                    <li>Venta → Horario: <strong>ManyToOne (N:1)</strong></li>
+                    <li>Horario → Venta: <strong>OneToMany (1:N)</strong></li>
+                </ul>
+            </li>
         </ul>
 
         <h3>2.5. Socio ↔ Login</h3>
         <ul>
             <li><strong>FK:</strong> <code>socios.login_id → logins.id</code> (opcional)</li>
-            <li><strong>Cardinalidad:</strong></li>
-            <ul>
-                <li>Un <strong>Socio</strong> puede estar vinculado a un solo <strong>Login</strong>.</li>
-                <li>Un <strong>Login</strong> puede estar vinculado, como máximo, a un <strong>Socio</strong>.</li>
-            </ul>
-            <li><strong>Tipo:</strong></li>
-            <ul>
-                <li>Socio → Login: <strong>Optional OneToOne (0..1 : 1)</strong></li>
-                <li>Login → Socio: <strong>Optional OneToOne (1 : 0..1)</strong></li>
-            </ul>
+            <li>
+                <strong>Cardinalidad:</strong>
+                <ul>
+                    <li>Un <strong>Socio</strong> puede estar vinculado a un solo <strong>Login</strong>.</li>
+                    <li>Un <strong>Login</strong> puede estar vinculado, como máximo, a un <strong>Socio</strong>.</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Tipo:</strong>
+                <ul>
+                    <li>Socio → Login: <strong>Optional OneToOne (0..1 : 1)</strong></li>
+                    <li>Login → Socio: <strong>Optional OneToOne (1 : 0..1)</strong></li>
+                </ul>
+            </li>
         </ul>
 
         <h3>2.6. Venta ↔ Socio (futuro)</h3>
         <p class="subtle">(Opcional, si se implementa en el modelo)</p>
         <ul>
             <li><strong>FK:</strong> <code>ventas.socio_id → socios.id</code></li>
-            <li><strong>Cardinalidad:</strong></li>
-            <ul>
-                <li>Una <strong>Venta</strong> puede estar asociada a un <strong>Socio</strong>.</li>
-                <li>Un <strong>Socio</strong> puede tener muchas <strong>Ventas</strong> a lo largo del tiempo.</li>
-            </ul>
-            <li><strong>Tipo:</strong></li>
-            <ul>
-                <li>Venta → Socio: <strong>ManyToOne (N:1)</strong></li>
-                <li>Socio → Venta: <strong>OneToMany (1:N)</strong></li>
-            </ul>
+            <li>
+                <strong>Cardinalidad:</strong>
+                <ul>
+                    <li>Una <strong>Venta</strong> puede estar asociada a un <strong>Socio</strong>.</li>
+                    <li>Un <strong>Socio</strong> puede tener muchas <strong>Ventas</strong> a lo largo del tiempo.</li>
+                </ul>
+            </li>
+            <li>
+                <strong>Tipo:</strong>
+                <ul>
+                    <li>Venta → Socio: <strong>ManyToOne (N:1)</strong></li>
+                    <li>Socio → Venta: <strong>OneToMany (1:N)</strong></li>
+                </ul>
+            </li>
         </ul>
 
         <h3>Resumen visual simplificado</h3>
