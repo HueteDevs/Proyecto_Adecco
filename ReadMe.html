@@ -1,10 +1,10 @@
-Añademe al titulo esta imagen centrada a este readme.html: <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
     <meta charset="utf-8" />
-    <title>🎥 Cartelera de Cine en Python</title>
+    <title>🎥 Cartelera de Cine en Python (Parte 1)</title>
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="Proyecto Cartelera de Cine en Python: gestión de películas, horarios, salas, ventas, géneros, login y socios." />
+    <meta name="description" content="Proyecto Cartelera de Cine en Python: descripción funcional, arquitectura, entidades y modelo de datos." />
     <style>
         body {
             font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -218,6 +218,7 @@ Añademe al titulo esta imagen centrada a este readme.html: <!DOCTYPE html>
             <span class="tag">HTML5</span>
             <span class="tag">CSS3</span>
             <span class="tag">JavaScript</span>
+            <span class="tag">SQL</span>
             <span class="tag">Visual Studio Code</span>
         </div>
     </section>
@@ -260,8 +261,8 @@ Añademe al titulo esta imagen centrada a este readme.html: <!DOCTYPE html>
 │   │   └── login.py         # Rutas de autenticación / login
 │   ├── database/
 │   │   ├── cartelera_cine.py    # Motor de conexión SQLAlchemy
-│   │   ├── db.py       # Creación y seed de la base de datos
-│   │   └── cartelera_cine.db  # Base de datos SQLite
+│   │   ├── db.py                # Schema y seed de la base de datos
+│   │   └── cartelera_cine.db    # Base de datos SQLite
 │   ├── templates/
 │   │   ├── base.html        # Layout común
 │   │   ├── peliculas/       # Vistas HTML de peliculas
@@ -819,6 +820,186 @@ logins (1) ────(0..1) socios
 
 socios (1) ────&lt; (N) ventas    [opcional si se añade ventas.socio_id]
         </code></pre>
+        
+
+<section id="instalacion" aria-labelledby="instalacion-heading">
+        <h2 id="instalacion-heading">📦 Instalación de dependencias</h2>
+        <p>
+            Antes de ejecutar el proyecto se recomienda utilizar un entorno virtual de Python
+            y cargar todas las dependencias desde <code>requirements.txt</code>.
+        </p>
+
+        <h3>1. Clonar el repositorio</h3>
+        <pre><code>git clone https://github.com/HueteDevs/Proyecto_Adecco
+cd Proyecto_Adecco
+        </code></pre>
+
+        <h3>2. Crear y activar entorno virtual (opcional, pero recomendado)</h3>
+        <pre><code># Linux y MacOS
+python3 -m venv .venv
+source .venv/bin/activate
+
+# Windows (PowerShell)
+python -m venv .venv
+.venv\Scripts\Activate.ps1
+        </code></pre>
+
+        <h3>3. Instalar dependencias del proyecto</h3>
+        <p>Con el entorno virtual activado:</p>
+        <pre><code>pip install -r requirements.txt
+        </code></pre>
+
+        <p class="subtle">
+            Entre las dependencias típicas se incluyen paquetes como
+            <code>fastapi</code>, <code>uvicorn</code>, <code>sqlalchemy</code>,
+            <code>pydantic</code> <code>jinja2</code> y el driver de <code>sqlite</code> ya incorporado
+            en la librería estándar de Python.
+        </p>
+    </section>
+
+    <section id="ejecucion" aria-labelledby="ejecucion-heading">
+        <h2 id="ejecucion-heading">▶️ Ejecución paso a paso</h2>
+        <p>
+            Una vez instaladas las dependencias y creada la base de datos, la ejecución
+            del proyecto se realiza normalmente a través de <strong>FastAPI</strong>
+            y un servidor ASGI como <strong>Uvicorn</strong>.
+        </p>
+
+        <h3>1. Comprobar variables de entorno (opcional)</h3>
+        <p>
+            Si se utilizan variables de entorno (por ejemplo, para el modo debug o la URL
+            de la base de datos), configúralas antes de lanzar la aplicación.
+        </p>
+
+        <h3>2. Ejecutar el servidor de desarrollo</h3>
+        <pre><code># Desde la raíz del proyecto
+uvicorn app.main:app --reload
+        </code></pre>
+
+        <p>
+            Por defecto, la API estará disponible en:
+            <code>http://127.0.0.1:8000</code> y la documentación interactiva en:
+        </p>
+        <ul>
+            <li><code>http://127.0.0.1:8000/docs</code> (Swagger UI)</li>
+            <li><code>http://127.0.0.1:8000/redoc</code> (ReDoc)</li>
+        </ul>
+
+        <h3>3. Ejecución desde <code>run.py</code> (alternativa)</h3>
+        <pre><code>python run.py
+        </code></pre>
+        <p class="subtle">
+            Este script puede actuar como punto de entrada unificado para
+            entornos de desarrollo o despliegue.
+        </p>
+    </section>
+
+    <section id="scripts-bd" aria-labelledby="scripts-bd-heading">
+        <h2 id="scripts-bd-heading">🗄️ Scripts de inicialización de la base de datos</h2>
+        <p>
+            La base de datos principal del proyecto es un fichero
+            <strong>SQLite</strong> llamado <code>cartelera_cine.db</code>,
+            ubicado en <code>app/database/</code>.
+        </p>
+
+        <h3>1. Módulos de base de datos</h3>
+        <ul>
+            <li><code>app/database/cartelera_cine.py</code> — configuración de la conexión SQLAlchemy.</li>
+            <li><code>app/database/db.py</code> — creación de tablas y carga inicial de datos (seed).</li>
+        </ul>
+
+        <h3>2. Crear o recrear la base de datos</h3>
+        <p>Desde la raíz del proyecto:</p>
+        <pre><code>python -m app.cartelera_cine.db
+        </code></pre>
+
+        <p>
+            Este script se encarga de:
+        </p>
+        <ul>
+            <li>Crear el fichero <code>cartelera_cine.db</code> si no existe.</li>
+            <li>Generar las tablas correspondientes a las entidades:
+                <code>peliculas</code>, <code>generos</code>, <code>salas</code>,
+                <code>horarios</code>, <code>ventas</code>, <code>logins</code> y <code>socios</code>.
+            </li>
+            <li>Cargar datos de ejemplo (películas, horarios, etc.) para pruebas.</li>
+        </ul>
+
+        <h3>3. Regenerar la base de datos (entornos de desarrollo)</h3>
+        <p class="subtle">
+            En desarrollo es habitual borrar el fichero
+            <code>cartelera_cine.db</code> y volver a ejecutar
+            <code>python -m app.cartelera_cine.db</code> para partir de un estado limpio.
+        </p>
+    </section>
+
+    <section id="fastapi-endpoints" aria-labelledby="fastapi-endpoints-heading">
+        <h2 id="fastapi-endpoints-heading">🌐 Definición de endpoints con FastAPI</h2>
+        <p>
+            La API se estructura en módulos de rutas dentro del paquete
+            <code>app/routes/</code>, separando por dominio funcional
+            (películas, géneros, salas, horarios, ventas, socios y login).
+        </p>
+
+        <h3>1. Punto de entrada de la API: <code>app/main.py</code></h3>
+        <pre><code>from fastapi import FastAPI
+from app.routes import peliculas, generos, salas, horarios, ventas, socios, login
+
+app = FastAPI(title="Cartelera de Cine en Python")
+
+app.include_router(peliculas.router, prefix="/peliculas", tags=["Películas"])
+app.include_router(generos.router,   prefix="/generos",   tags=["Géneros"])
+app.include_router(salas.router,     prefix="/salas",     tags=["Salas"])
+app.include_router(horarios.router,  prefix="/horarios",  tags=["Horarios"])
+app.include_router(ventas.router,    prefix="/ventas",    tags=["Ventas"])
+app.include_router(socios.router,    prefix="/socios",    tags=["Socios"])
+app.include_router(login.router,     prefix="/auth",      tags=["Login"])
+        </code></pre>
+
+        <h3>2. Ejemplo de endpoints: <code>app/routes/peliculas.py</code></h3>
+        <pre><code>from fastapi import APIRouter, HTTPException
+from typing import List
+from app.schemas.pelicula import PeliculaCreate, PeliculaRead
+from app.services.peliculas import PeliculaService
+
+router = APIRouter()
+
+@router.get("/", response_model=List[PeliculaRead])
+def listar_peliculas():
+    return PeliculaService.listar()
+
+@router.get("/{pelicula_id}", response_model=PeliculaRead)
+def obtener_pelicula(pelicula_id: int):
+    pelicula = PeliculaService.obtener(pelicula_id)
+    if not pelicula:
+        raise HTTPException(status_code=404, detail="Película no encontrada")
+    return pelicula
+
+@router.post("/", response_model=PeliculaRead, status_code=201)
+def crear_pelicula(datos: PeliculaCreate):
+    return PeliculaService.crear(datos)
+
+@router.delete("/{pelicula_id}", status_code=204)
+def eliminar_pelicula(pelicula_id: int):
+    PeliculaService.eliminar(pelicula_id)
+        </code></pre>
+
+        <h3>3. Endpoints habituales por módulo</h3>
+        <ul>
+            <li><strong>/peliculas</strong>: CRUD de películas y filtros por género, disponibilidad, etc.</li>
+            <li><strong>/generos</strong>: mantenimiento del catálogo de géneros.</li>
+            <li><strong>/salas</strong>: gestión de salas y capacidades.</li>
+            <li><strong>/horarios</strong>: gestión de sesiones (película + sala + hora).</li>
+            <li><strong>/ventas</strong>: registro de ventas y consultas de recaudación.</li>
+            <li><strong>/socios</strong>: alta, baja y gestión de datos de socios.</li>
+            <li><strong>/login</strong>: registro, login, logout y gestión de credenciales.</li>
+        </ul>
+
+        <p class="subtle">
+            Esta organización facilita el mantenimiento, la escalabilidad del proyecto y
+            la integración posterior con un frontend (por ejemplo, una SPA o plantillas
+            Jinja2).
+        </p>
     </section>
 
     <section id="futuras-mejoras" aria-labelledby="futuras-mejoras-heading">
@@ -834,22 +1015,22 @@ socios (1) ────&lt; (N) ventas    [opcional si se añade ventas.socio_id
 
     <section id="actualizaciones" aria-labelledby="actualizaciones-heading">
         <h2 id="actualizaciones-heading">📦 Próximas actualizaciones</h2>
-        <p>Se incorporará documentación detallada sobre:</p>
+        <p>Se incorporará documentación detallada y ejemplos adicionales sobre:</p>
         <ul>
             <li>Estructura de carpetas del proyecto.</li>
-            <li>Instalación de dependencias.</li>
-            <li>Ejecución paso a paso.</li>
-            <li>Scripts de inicialización de la base de datos.</li>
-            <li>Definición de endpoints (en caso de usar FastAPI).</li>
+            <li>Instalación de dependencias en distintos entornos.</li>
+            <li>Ejecución paso a paso con distintos perfiles (desarrollo / producción).</li>
+            <li>Scripts de inicialización y migraciones de la base de datos.</li>
+            <li>Definición avanzada de endpoints y seguridad en FastAPI.</li>
         </ul>
     </section>
 
 </main>
 
 <footer role="contentinfo">
-    ✨ Proyecto en constante evolución. Cada aportación suma.  
-    Este repositorio seguirá creciendo con nuevas funcionalidades, mejoras y buenas prácticas de programación.
+    ✨ Proyecto en constante evolución. Cada aportación suma. Este repositorio seguirá creciendo con nuevas funcionalidades, mejoras y buenas prácticas de programación.
 </footer>
 
 </body>
 </html>
+
