@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo }} - Cartelera TIC</title>
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎥</text></svg>">
+    
+    <link href="{{ url_for('static', path='/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet"> 
+    
+    <link href="{{ url_for('static', path='/css/proyecto.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="form-container">
+            <div class="card-header text-center">
+                <h1 class="h3 mb-0">{{ titulo }}</h1>
+                <p class="mb-0 fs-6">Gestión de la Ficha Técnica de la Película</p>
+            </div>
+            
+            <form action="/peliculas/{{ 'editar/' + pelicula.id|string if pelicula else 'nueva' }}" method="post" class="p-4">
+
+                <div class="row g-3 mb-4">
+                    <div class="col-md-8">
+                        <label for="titulo" class="form-label fw-bold">Título <span class="text-danger">*</span></label>
+                        <input type="text" class="form-control" id="titulo" name="titulo" 
+                               value="{{ pelicula.titulo if pelicula else '' }}" required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="duracion" class="form-label fw-bold">Duración (min) <span class="text-danger">*</span></label>
+                        <input type="number" class="form-control" id="duracion" name="duracion" min="1" 
+                               value="{{ pelicula.duracion if pelicula else '' }}" required>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="genero_id" class="form-label fw-bold">Género <span class="text-danger">*</span></label>
+                        <select class="form-select" id="genero_id" name="genero_id" required>
+                            <option value="">-- Seleccione un Género --</option>
+                            {% for genero in generos %}
+                                <option value="{{ genero.id }}" 
+                                        {% if pelicula and genero.id == pelicula.genero_id %}selected{% endif %}>
+                                    {{ genero.nombre }}
+                                </option>
+                            {% endfor %}
+                        </select>
+                    </div>
+
+                    <div class="col-md-6">
+                        <label for="director" class="form-label fw-bold">Director (Opcional)</label>
+                        <input type="text" class="form-control" id="director" name="director" 
+                               value="{{ pelicula.director if pelicula and pelicula.director else '' }}">
+                    </div>
+
+                    <div class="col-12">
+                        <label for="descripcion" class="form-label fw-bold">Descripción (Opcional)</label>
+                        <textarea class="form-control" id="descripcion" name="descripcion" rows="3">{{ pelicula.descripcion if pelicula and pelicula.descripcion else '' }}</textarea>
+                    </div>
+                </div>
+
+                <h5 class="mt-4 mb-3 text-secondary">Detalles Adicionales</h5>
+
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label for="productora" class="form-label">Productora</label>
+                        <input type="text" class="form-control" id="productora" name="productora" 
+                               value="{{ pelicula.productora if pelicula and pelicula.productora else '' }}">
+                    </div>
+                    
+                    <div class="col-md-4">
+                        <label for="idioma" class="form-label">Idioma</label>
+                        <input type="text" class="form-control" id="idioma" name="idioma" 
+                               value="{{ pelicula.idioma if pelicula and pelicula.idioma else '' }}">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="trailer" class="form-label">URL del Trailer</label>
+                        <input type="url" class="form-control" id="trailer" name="trailer" 
+                               value="{{ pelicula.trailer if pelicula and pelicula.trailer else '' }}">
+                    </div>
+
+                    <div class="col-12">
+                        <label for="actores" class="form-label fw-bold">Actores (Separados por coma: ej. Actor 1, Actor 2)</label>
+                        <input type="text" class="form-control" id="actores" name="actores" 
+                               value="{{ pelicula.actores|join(', ') if pelicula and pelicula.actores else '' }}">
+                    </div>
+                </div>
+
+                <div class="row mt-4 mb-4 border-top pt-3">
+                    <div class="col-md-6">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="disponible" name="disponible" 
+                                   value="True" {% if pelicula and pelicula.disponible %}checked{% endif %}>
+                            <label class="form-check-label fw-bold" for="disponible">
+                                Disponible en Cartelera (Activo)
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <div class="form-check form-switch">
+                            <input class="form-check-input" type="checkbox" id="vose" name="vose" 
+                                   value="True" {% if pelicula and pelicula.vose %}checked{% endif %}>
+                            <label class="form-check-label fw-bold" for="vose">
+                                Versión Original Subtitulada (VOSE)
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="d-flex justify-content-between pt-3">
+                    <a href="/" class="btn btn-secondary me-2">
+                        <i class="bi bi-arrow-left"></i> Cancelar
+                    </a>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="bi bi-save"></i> 
+                        {% if pelicula %}Guardar Cambios{% else %}Añadir Película{% endif %}
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <script src="{{ url_for('static', path='/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+</body>
+</html>

@@ -1,8 +1,8 @@
-## CARTELERA
+## CARTELERA DE CINE
 
-### Pelicula (JAVIER)
+### Pelicula (JAVIER CACHÓN)
 - titulo: string
-- genero_id: int **RELACION**
+- genero_id: int **RELACION Pelicula a Genero ManyToOne**
 - duracion: int
 - director (opcional): string
 - descripcion (opcional): string
@@ -10,8 +10,20 @@
 - productora (opcional): string
 - idioma (opcional): string
 - VOSE (opcional): boolean
-- actores: list
+- actores: lista
 - disponible: boolean
+
+Servicios — Películas 🎬
+    • Añadir película
+    • Ver películas disponibles
+    • Eliminar/editar película
+    
+Extra (futuro si hay tiempo)
+    • Ordenar por género / clasificación / duración
+    • Guardar en archivo externo (JSON o CSV)
+    
+- base de datos SQLite
+- Visual Studio Code
 
 ### Sala (REYES)
 - numero: int
@@ -31,6 +43,6 @@
 - cantidad: int
 - metodo_pago: string/enum (efectivo, tarjeta, cripto)
 
-### Genero(KARY)
+### Genero(KARY) **RELACION Bidireccional Pelicula a Genero ManyToOne**
 - nombre: string (historica, accion, romance, fantasia, drama...)
 - descripcion (opcional): string
