@@ -525,8 +525,6 @@ app.include_router(generos.router,   prefix="/generos",   tags=["Géneros"])
 app.include_router(salas.router,     prefix="/salas",     tags=["Salas"])
 app.include_router(horarios.router,  prefix="/horarios",  tags=["Horarios"])
 app.include_router(ventas.router,    prefix="/ventas",    tags=["Ventas"])
-app.include_router(socios.router,    prefix="/socios",    tags=["Socios"])
-app.include_router(login.router,     prefix="/auth",      tags=["Login"])
 2. Ejemplo de endpoints: app/routes/peliculas.py
 python
 from fastapi import APIRouter, HTTPException
@@ -564,10 +562,6 @@ def eliminar_pelicula(pelicula_id: int):
 /horarios: gestión de sesiones (película + sala + hora).
 
 /ventas: registro de ventas y consultas de recaudación.
-
-/socios: alta, baja y gestión de datos de socios.
-
-/auth: registro, login, logout y gestión de credenciales.
 
 Esta organización facilita el mantenimiento, la escalabilidad del proyecto y la integración posterior con un frontend (por ejemplo, una SPA o plantillas Jinja2).
 
