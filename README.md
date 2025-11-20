@@ -85,8 +85,7 @@ A continuación se detalla la estructura recomendada del proyecto Cartelera de C
 │   │   ├── salas.py         # Rutas CRUD Salas
 │   │   ├── horarios.py      # Rutas CRUD Horarios
 │   │   ├── ventas.py        # Rutas CRUD Ventas
-│   │   ├── socios.py        # Rutas CRUD Socios
-│   │   └── login.py         # Rutas de autenticación / login
+│   │   
 │   ├── database/
 │   │   ├── db.py            # Motor de conexión SQLAlchemy
 │   │   ├── db.sql           # Schema y seed de la base de datos
@@ -98,15 +97,10 @@ A continuación se detalla la estructura recomendada del proyecto Cartelera de C
 │   │   ├── salas/           # Vistas HTML de salas
 │   │   ├── horarios/        # Vistas HTML de horarios
 │   │   ├── ventas/          # Vistas HTML de ventas
-│   │   ├── socios/          # Vistas HTML de socios
-│   │   └── login/           # Vistas HTML de login/autenticación
-│   └── static/
-│       ├── css/
-│       ├── js/
-│       └── img/
+│   │   
 ├── requirements.txt
 ├── README.html
-└── run.py
+
 🎬 Entidades del sistema
 🎞️ Pelicula
 Responsable: JAVIER CACHÓN Representa una película disponible (o no) en la cartelera.
@@ -379,117 +373,6 @@ Permitir múltiples géneros por película (tabla intermedia)
 
 Estadísticas por género (películas, ventas, horarios, etc.)
 
-🔐 Login / Autenticación
-Responsable: JAVIER CACHÓN Sistema central de autenticación y autorización de usuarios (clientes y administradores).
-
-Campos
-id: int — PK
-
-username: string (único)
-
-email: string (único)
-
-password_hash: string
-
-rol: enum (usuario, administrador)
-
-activo: boolean
-
-bloqueado: boolean
-
-creado_en: datetime
-
-actualizado_en: datetime
-
-Relaciones (modelo y ORM)
-Login ↔ Socio Relación modelada típicamente como Optional One-to-One: la FK opcional reside en la tabla socios.
-
-Un Socio puede vincularse a un único Login mediante login_id.
-
-Un Login puede estar vinculado, como máximo, a un Socio. Esta relación permite: socios sin login (alta en taquilla) y logins sin socio (usuario registrado sin programa de puntos).
-
-Servicios — Login 🔐
-Registrar usuario
-
-Iniciar sesión
-
-Cerrar sesión
-
-Cambiar contraseña
-
-Recuperar contraseña
-
-Bloquear / desbloquear cuenta
-
-Editar email o username
-
-Listar logins activos / bloqueados
-
-Extra (futuro)
-Doble factor de autenticación (2FA)
-
-Historial de accesos (IP, fecha, dispositivo)
-
-Expiración periódica de contraseña
-
-👥 Socio / Fidelización
-Responsable: JAVIER CACHÓN Sistema de clientes registrados con ventajas y programa de puntos.
-
-Campos
-id: int — PK
-
-numero_socio: string
-
-login_id: int — (opcional) FK → logins.id
-
-email: string (único)
-
-nivel: enum (Basic, Silver, Gold, VIP)
-
-puntos: int
-
-fecha_alta: datetime
-
-activo: boolean
-
-Relaciones (modelo y ORM)
-Socio ↔ Login
-
-Cada Socio puede estar vinculado a un único Login (cuenta de acceso web).
-
-Cada Login puede vincularse, como máximo, a un Socio.
-
-Socio ↔ Venta (opcional / futuro)
-
-Un Socio puede tener asociadas múltiples Ventas (historial de compras).
-
-Cada Venta puede referenciar al Socio que la realizó.
-
-Servicios — Socios 👥
-Alta de socio
-
-Vincular socio con login
-
-Consultar perfil de socio
-
-Consultar puntos
-
-Upgrade/downgrade de nivel
-
-Sumar puntos (compras, promociones)
-
-Restar puntos (canjes, devoluciones)
-
-Baja de socio (marcar como inactivo)
-
-Extra (futuro)
-Historial de puntos
-
-Ventajas por nivel (descuentos, preestrenos, etc.)
-
-Envío de promociones por email
-
-Tarjeta digital QR
 
 🔗 Modelo de datos y relaciones (Cardinalidad)
 A continuación se resumen las relaciones entre las entidades, indicando claves foráneas, dirección, cardinalidad y, cuando aplica, cómo se navega en el ORM.
@@ -558,49 +441,7 @@ Venta → Horario: ManyToOne (N:1)
 
 Horario → Venta: OneToMany (1:N)
 
-2.5. Socio ↔ Login
-FK: socios.login_id → logins.id (opcional)
 
-Cardinalidad:
-
-Un Socio puede estar vinculado a un solo Login.
-
-Un Login puede estar vinculado, como máximo, a un Socio.
-
-Tipo:
-
-Socio → Login: Optional OneToOne (0..1 : 1)
-
-Login → Socio: Optional OneToOne (1 : 0..1)
-
-2.6. Venta ↔ Socio (futuro)
-(Opcional, si se implementa en el modelo)
-
-FK: ventas.socio_id → socios.id
-
-Cardinalidad:
-
-Una Venta puede estar asociada a un Socio.
-
-Un Socio puede tener muchas Ventas a lo largo del tiempo.
-
-Tipo:
-
-Venta → Socio: ManyToOne (N:1)
-
-Socio → Venta: OneToMany (1:N)
-
-Resumen visual simplificado
-text
-generos (1) ────< (N) peliculas
-
-peliculas (1) ────< (N) horarios >──── (1) salas
-
-horarios (1) ────< (N) ventas
-
-logins (1) ────(0..1) socios
-
-socios (1) ────< (N) ventas    [opcional si se añade ventas.socio_id]
 📦 Instalación de dependencias
 Antes de ejecutar el proyecto se recomienda utilizar un entorno virtual de Python y cargar todas las dependencias desde requirements.txt.
 
