@@ -4,6 +4,7 @@ Configuración de la aplicación FastAPI
 
 from fastapi import FastAPI
 from app.routers.api import router as api_router
+from app.routers.web import router as web_router
 
 # crea la instancia de la aplicación FastAPI
 app = FastAPI(title="Salas", version="1.0.0")
@@ -12,3 +13,4 @@ app = FastAPI(title="Salas", version="1.0.0")
 
 # registrar los routers
 app.include_router(api_router)
+app.include_router(web_router)

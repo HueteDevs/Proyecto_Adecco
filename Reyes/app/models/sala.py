@@ -10,6 +10,6 @@ class SalaORM(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     nombre: Mapped[str] = mapped_column(nullable=False)
     capacidad: Mapped[int] = mapped_column(Integer, nullable=False)
-    tipo: Mapped[str] = mapped_column(Enum("2D", "3D", "IMAX", "2d", "3d", "imax", name="tipo_enum"), nullable=False)
+    tipo: Mapped[str] = mapped_column(Enum("2D", "3D", "IMAX", "2d", "3d", "imax", "Imax", name="tipo_enum"), nullable=False)
     precio: Mapped[float] = mapped_column(Float, nullable=False)
     
