@@ -1,0 +1,48 @@
+REPOSITORIO
+- .venv
+- app
+    - models (modelos SQLAlchemy)
+        - __init__.py
+        - artist.py
+        - song.py
+    - routers (controladores)
+        - api (API REST)
+            - __init__.py
+            - artists.py
+            - songs.py
+        - web (controladores web)
+            - __init__.py
+            - artists.py
+            - home.py
+            - songs.py
+    - schemas (schemas Pydantic)
+        - __init__.py
+        - artist.py
+        - song.py
+    - static (archivos estáticos)
+        - css (hojas de estilo)
+            - styles.css
+        - img (imágenes)
+            - imagen1.jpg
+            - imagen2.jpg
+        - js (scripts javascript)
+            - script.js
+    - templates (plantillas Jinja2)
+        - artists
+            - detail.html
+            - form.html
+            - list.html
+        - songs
+            - detail.html
+            - form.html
+            - list.html
+        - home.html
+    - __init__.py
+    - database.py (configuración base de datos)
+    - main.py
+
+- database.db (base de datos)
+- .gitignore (archivos a ignorar)
+- main.py
+- README.md
+- requirements.txt
