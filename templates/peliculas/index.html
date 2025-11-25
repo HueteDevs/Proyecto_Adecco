@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo }}</title>
+    
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎥</text></svg>">
+    
+    <link href="{{ url_for('static', path='/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" 
+        xintegrity="sha512-SnH5WK+bZxgPHs44uWIX+LLMDJzL3gUq73K2qI90U8v8lC6W9lJvGvE8j+N5i3F3aH8O/2p1x9h6O2A1g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    
+    <link href="{{ url_for('static', path='/css/proyecto.css') }}" rel="stylesheet">
+
+</head>
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-dark shadow sticky-top">
+        <div class="container">
+            <a class="navbar-brand d-flex align-items-center" href="/">
+                <i class="fas fa-ticket-alt me-2"></i> 
+                    Gestión de Cartelera - Cine
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <div class="d-flex flex-wrap ms-auto gap-2 py-2 py-lg-0">
+                    
+                    <a href="/" class="btn btn-primary btn-entity">
+                        <i class="fas fa-film me-1"></i> Películas
+                    </a>
+
+                    <a href="/salas/" class="btn btn-outline-light btn-entity">
+                        <i class="fas fa-desktop me-1"></i> Salas
+                    </a>
+
+                    <a href="/horarios/" class="btn btn-outline-light btn-entity">
+                        <i class="fas fa-clock me-1"></i> Horarios
+                    </a>
+                    
+                    <a href="/generos/" class="btn btn-outline-light btn-entity">
+                        <i class="fas fa-tag me-1"></i> Géneros
+                    </a>
+                    
+                    <a href="/ventas/" class="btn btn-outline-light btn-entity">
+                        <i class="fas fa-cash-register me-1"></i> Ventas
+                    </a>
+
+                    <a href="/socios/" class="btn btn-outline-light btn-entity">
+                        <i class="fas fa-user-friends me-1"></i> Socios
+                    </a>
+
+                    <a href="/login/" class="btn btn-outline-light btn-entity btn-login-extended">
+                        <i class="fas fa-user me-1"></i> Login
+                    </a>
+
+                    <!-- INICIO: Botón de Exportación/Importación -->
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light dropdown-toggle btn-entity" 
+                                type="button" 
+                                id="dataDropdown" 
+                                data-bs-toggle="dropdown" 
+                                aria-expanded="false"
+                                title="Opciones de Importación y Exportación de Datos">
+                            <i class="fas fa-database me-1"></i> CSV/JSON
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dataDropdown">
+                            
+                            <li><h6 class="dropdown-header">Exportar Catálogo (Filtros Activos)</h6></li>
+                            <li>
+                                <a class="dropdown-item" href="/peliculas/export/csv">
+                                    <i class="fas fa-file-csv me-2 text-success"></i> Descargar CSV
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item" href="/peliculas/export/json">
+                                    <i class="fas fa-file-code me-2 text-primary"></i> Descargar JSON
+                                </a>
+                            </li>
+                            
+                            <li><hr class="dropdown-divider"></li>
+                            
+                            <li><h6 class="dropdown-header">Importar Datos (Añadir/Actualizar)</h6></li>
+                            <li>
+                                <button type="button" class="dropdown-item" data-bs-toggle="modal" data-bs-target="#importModal">
+                                    <i class="fas fa-upload me-2 text-warning"></i> Subir Archivo CSV/JSON
+                                </button>
+                            </li>
+                            
+                            <li><hr class="dropdown-divider"></li>
+                            <li>
+                                <a class="dropdown-item" href="/docs" target="_blank">
+                                    <i class="fas fa-code me-2 text-info"></i> API Docs (Swagger)
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+                    <!-- FIN: Botón de Exportación/Importación -->
+
+                </div>
+            </div>
+            
+        </div>
+    </nav>
+
+    <main class="container my-5">
+        
+        <!-- INICIO: Bloque de Errores de Importación (PARA MOSTRAR EL RESULTADO DE LA SUBIDA) -->
+        {% if error_importacion %}
+        <div class="alert alert-danger shadow-sm mb-5" role="alert">
+            <h4 class="alert-heading"><i class="fas fa-exclamation-circle me-2"></i> Error en la Importación</h4>
+            <p>{{ error_importacion }}</p>
+            {% if detalle_errores %}
+            <hr>
+            <p class="mb-0 small">Detalles de las filas con errores:</p>
+            <div class="table-responsive mt-2" style="max-height: 200px; overflow-y: scroll;">
+                <table class="table table-sm table-bordered table-hover bg-white small">
+                    <thead>
+                        <tr>
+                            <th>Fila</th>
+                            <th>Error</th>
+                            <th>Datos Subidos</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for error in detalle_errores %}
+                        <tr>
+                            <td>{{ error.row }}</td>
+                            <td class="text-danger">{{ error.error|truncate(100) }}</td>
+                            <td><pre class="mb-0">{{ error.data|tojson }}</pre></td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% endif %}
+        </div>
+        {% endif %}
+        <!-- FIN: Bloque de Errores de Importación -->
+               
+        <div class="mb-5">
+            <img src="{{ url_for('static', path='/img/cinema.jpg') }}" 
+            class="img-fluid rounded shadow-sm w-100"
+            alt="Cine - Cartelera"
+            style="max-height: 380px; object-fit: cover;">
+        </div>
+        
+        <form method="GET" action="/" class="p-4 mb-5 border rounded-lg bg-white shadow-sm">
+            <h5 class="mb-3 text-secondary"><i class="fas fa-filter me-2"></i> Filtros y Búsqueda</h5>
+            <div class="mb-4">
+                <label for="q" class="form-label small fw-bold">Búsqueda Rápida (Título, Director, Actores)</label>
+                <div class="input-group">
+                    <span class="input-group-text"><i class="fas fa-search"></i></span>
+                    <input type="search" class="form-control" id="q" name="q" placeholder="Buscar por palabra clave..."
+                           value="{{ filtros_activos.q if filtros_activos.q else '' }}">
+                </div>
+            </div>
+
+            <div class="row g-3">
+                <div class="col-md-4">
+                    <label for="genero_id" class="form-label small fw-bold">1. Género</label>
+                    <select class="form-select form-select-sm" id="genero_id" name="genero_id">
+                        <option value="">-- Todos los Géneros --</option>
+                        {% for genero in generos %}
+                            <option value="{{ genero.id }}" 
+                                {% if filtros_activos.genero_id|string == genero.id|string %}selected{% endif %}>
+                                {{ genero.nombre }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-4 d-flex align-items-end">
+                    <div class="form-check form-switch pb-1">
+                        <input class="form-check-input" type="checkbox" id="disponible" name="disponible" 
+                               value="True" {% if filtros_activos.disponible %}checked{% endif %}>
+                        <label class="form-check-label small fw-bold" for="disponible">
+                            2. Clasificación (Solo Disponibles)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="col-md-4">
+                    <label for="duracion_max" class="form-label small fw-bold">3. Duración (Máx. en min)</label>
+                    <input type="number" class="form-control form-control-sm" id="duracion_max" name="duracion_max" min="0" 
+                           value="{{ filtros_activos.duracion_max if filtros_activos.duracion_max else '' }}">
+                </div>
+            </div>
+            <div class="d-flex justify-content-end gap-2 mt-4">
+                <a href="/" class="btn btn-outline-secondary btn-sm"><i class="fas fa-redo me-1"></i> Limpiar Filtros</a>
+                <button type="submit" class="btn btn-primary btn-sm"><i class="fas fa-search me-1"></i> Aplicar Filtros</button>
+            </div>
+        </form>
+        
+        <p class="text-center text-muted mb-4">Mostrando {{ peliculas|length }} películas que cumplen los criterios de filtro.</p>
+
+        <center>
+            <div class="mb-4">
+                <a href="/peliculas/nueva" class="btn btn-lg btn-success shadow-sm">
+                    <i class="fas fa-plus-circle me-2"></i> Añadir Nueva Película
+                </a>
+            </div>
+        </center>
+        
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            
+            {% for pelicula in peliculas %}
+            
+            <div class="col">
+                <div class="card h-100 shadow-sm card-movie-entry">
+                    <div class="card-body d-flex flex-column">
+                        
+                        <h5 class="card-title border-bottom pb-2 mb-3">
+                            <span class="badge bg-secondary me-2">{{ pelicula.id }}</span>
+                            {{ pelicula.titulo }} 
+                            {% if pelicula.vose %}
+                                <span class="badge bg-primary genre-badge float-end">VOSE</span>
+                            {% endif %}
+                        </h5>
+                        
+                        <div class="mb-3">
+                            <span class="genre-badge bg-primary text-white me-2">
+                                <i class="fas fa-bookmark"></i> 
+                                {{ pelicula.genero.nombre if pelicula.genero else 'Sin Género' }}
+                            </span>
+                            <span class="duration">
+                                <i class="fas fa-clock"></i> {{ pelicula.duracion }} min
+                            </span>
+                        </div>
+                        
+                        <p class="card-text text-secondary">{{ pelicula.descripcion|truncate(150) }}</p>
+                        
+                            <div class="mt-auto pt-3 border-top border-light">
+                            <p class="mb-1 small text-muted">Director: {{ pelicula.director if pelicula.director else 'Desconocido' }}</p>
+                            <p class="mb-1 small text-muted">Productora: {{ pelicula.productora if pelicula.productora else 'N/A' }}</p>
+                            <p class="mb-1 small text-muted">Idioma: {{ pelicula.idioma if pelicula.idioma else 'N/A' }}</p>
+                            
+                            {% if pelicula.actores and pelicula.actores|length > 0 %}
+                            <p class="mb-1 small text-muted text-truncate" title="{{ pelicula.actores|join(', ') }}">
+                                Actores: {{ pelicula.actores|join(', ') }}
+                            </p>
+                            {% else %}
+                            <p class="mb-1 small text-muted">Reparto: N/A</p>
+                            {% endif %}
+                            
+                            <div class="d-flex gap-2 mt-3">
+                                
+                                <a href="/peliculas/{{ pelicula.id }}" class="btn btn-info btn-sm flex-fill text-white">
+                                    <i class="fas fa-eye"></i> Ver
+                                </a>
+                                
+                                <a href="/peliculas/editar/{{ pelicula.id }}" class="btn btn-warning btn-sm flex-fill">
+                                    <i class="fas fa-edit"></i> Editar
+                                </a>
+                                
+                                <button type="button" 
+                                        class="btn btn-delete-intense btn-sm" 
+                                        data-bs-toggle="modal" 
+                                        data-bs-target="#deleteConfirmModal"
+                                        data-pelicula-id="{{ pelicula.id }}"
+                                        data-pelicula-titulo="{{ pelicula.titulo }}">
+                                    <i class="fas fa-trash"></i> Eliminar
+                                </button>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            {% endfor %}
+            </div>
+        
+        {% if not peliculas %}
+        <div class="alert alert-info text-center mt-5">
+            <i class="fas fa-exclamation-triangle me-2"></i> Lo sentimos, no hay películas disponibles en cartelera.
+        </div>
+        {% endif %}
+
+    </main>
+
+    <!-- Modal de Importación (Contenedor para subir archivos) -->
+    <div class="modal fade" id="importModal" tabindex="-1" aria-labelledby="importModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="importModalLabel"><i class="fas fa-upload me-2"></i> Importar Catálogo de Películas</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p class="text-muted small mb-3">Suba un archivo CSV o JSON para añadir o actualizar el catálogo de películas. Los registros existentes con el mismo **título** serán actualizados.</p>
+                    
+                    <!-- Formulario de Subida: Su acción se define mediante JS basado en la extensión del archivo -->
+                    <form id="importForm" action="" method="post" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="importFile" class="form-label fw-bold">Seleccionar Archivo (CSV / JSON)</label>
+                            <input class="form-control" type="file" id="importFile" name="file" accept=".csv, application/json">
+                        </div>
+                    </form>
+                    
+                    <div class="alert alert-info small">
+                        **Formato Esperado:** El archivo debe tener las columnas: `titulo`, `duracion`, `genero_nombre`, `disponible`, etc. Se recomienda **exportar un archivo primero** para ver el formato correcto.
+                    </div>
+                    
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="button" id="submitImport" class="btn btn-warning"><i class="fas fa-upload me-1"></i> Iniciar Importación</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Fin Modal de Importación -->
+    
+    <!-- Modal de Confirmación de Eliminación (Existente) -->
+    <div class="modal fade" id="deleteConfirmModal" tabindex="-1" aria-labelledby="confirmDeleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-top border-5" style="border-color: var(--color-delete-intense) !important;">
+                
+                <div class="modal-header">
+                    <h5 class="modal-title modal-title-blue" id="confirmDeleteModalLabel">
+                        <i class="fas fa-exclamation-triangle me-2 text-delete-warning"></i> Confirmación de Borrado Crítico
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
+                </div>
+                
+                <div class="modal-body">
+                    <p class="lead text-delete-warning">¿Estás absolutamente seguro de que deseas eliminar la película?</p>
+                    
+                    <div class="p-3 border rounded">
+                        <p class="mb-1">
+                            <strong>Título:</strong> 
+                            <span class="text-secondary fw-bold" id="modalPeliculaTitulo"></span> 
+                            <span class="badge text-bg-secondary ms-2" id="modalPeliculaId"></span>
+                        </p>
+                    </div>
+                    
+                    <p class="text-muted small mt-3">Esta acción es **irreversible** y eliminará la película de la base de datos permanentemente.</p>
+                </div>
+                
+                <div class="modal-footer">
+                    
+                    <button type="button" class="btn btn-cancel-orange" data-bs-dismiss="modal">
+                        <i class="fas fa-undo me-1"></i> No Eliminar (Cancelar)
+                    </button>
+                    
+                    <form id="deleteForm" action="/peliculas/eliminar/0" method="post" class="d-inline">
+                        <button type="submit" class="btn btn-delete-intense">
+                            <i class="fas fa-trash-alt me-1"></i> Sí, Eliminar Permanentemente
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="text-white-50 py-3 mt-5 footer-project">
+        <div class="container text-center">
+            <small>
+                Proyecto Cartelera de Cine &copy; 2025. Desarrollado con Python/FastAPI, Jinja2 y Bootstrap. 
+                <br>
+                Compromiso con el Software Libre, Código Abierto, GNU/Linux y la Excelencia Educativa.
+            </small>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', path='/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ url_for('static', path='/js/proyecto.js') }}"></script>
+    
+    <!-- Script específico para manejar la subida de archivos y el formulario de importación -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // El script para el modal de borrado (proyecto.js) ya existe y debe funcionar.
+            
+            const importFile = document.getElementById('importFile');
+            const submitImportButton = document.getElementById('submitImport');
+            const importForm = document.getElementById('importForm');
+            
+            // Función auxiliar para mostrar alertas temporales en la UI (en lugar de alert())
+            function showTemporaryAlert(message) {
+                 const alertContainer = document.querySelector('main .container');
+                 const alertDiv = document.createElement('div');
+                 alertDiv.className = 'alert alert-warning alert-dismissible fade show mt-3';
+                 alertDiv.role = 'alert';
+                 alertDiv.innerHTML = `
+                    <i class="fas fa-exclamation-triangle me-2"></i> ${message}
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                 `;
+                 if (alertContainer) {
+                     // Insertamos antes del primer hijo (para que aparezca visiblemente arriba)
+                     alertContainer.insertBefore(alertDiv, alertContainer.firstChild); 
+                 } else {
+                     console.error("ALERTA (UI): " + message);
+                 }
+            }
+            
+            if (importFile && submitImportButton && importForm) {
+                
+                submitImportButton.addEventListener('click', function() {
+                    const selectedFile = importFile.files[0];
+                    if (!selectedFile) {
+                         showTemporaryAlert("Por favor, seleccione un archivo CSV o JSON para importar.");
+                         return;
+                    }
+                    
+                    // Determinar la ruta de la API basada en la extensión del archivo
+                    // Usamos el nombre y content_type para mayor robustez
+                    let actionUrl = '';
+                    const fileName = selectedFile.name.toLowerCase();
+
+                    if (fileName.endsWith('.csv') || selectedFile.type === 'text/csv' || selectedFile.type === 'application/vnd.ms-excel') {
+                        actionUrl = '/peliculas/import/csv';
+                    } else if (fileName.endsWith('.json') || selectedFile.type === 'application/json') {
+                        actionUrl = '/peliculas/import/json';
+                    } else {
+                        showTemporaryAlert("Formato de archivo no reconocido. Debe ser CSV o JSON. Tipo detectado: " + selectedFile.type);
+                        return;
+                    }
+                    
+                    // 1. Asignar la acción y el método POST
+                    importForm.action = actionUrl;
+                    importForm.method = 'POST';
+                    
+                    // 2. Desactivar el botón para evitar doble envío y dar feedback
+                    submitImportButton.disabled = true;
+                    submitImportButton.innerHTML = '<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Procesando...';
+                    
+                    // 3. Enviar el formulario
+                    importForm.submit();
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
