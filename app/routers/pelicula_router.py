@@ -43,7 +43,7 @@ def view_crear_pelicula(request: Request, db: Session = Depends(get_db)):
     try:
         generos = genero_service.get_all_generos(db)
         return templates.TemplateResponse(
-            "peliculas/pelicula_form.html",  # ← RUTA CORRECTA A LA PLANTILLA
+            "app/peliculas/pelicula_form.html",  # ← RUTA CORRECTA A LA PLANTILLA
             {
                 "request": request,
                 "titulo": "Añadir Nueva Película",
@@ -144,7 +144,7 @@ def view_pelicula_detalle(
         raise HTTPException(status_code=404, detail="Película no encontrada")
 
     return templates.TemplateResponse(
-        "peliculas/pelicula_detalle.html",  # ← RUTA CORRECTA
+        "app/peliculas/pelicula_detalle.html",  # ← RUTA CORRECTA
         {"request": request, "pelicula": pelicula},
     )
 
@@ -169,7 +169,7 @@ def view_editar_pelicula(
 
         # 3. Renderizar el formulario. Pasamos el objeto 'pelicula' para el pre-rellenado.
         return templates.TemplateResponse(
-            "peliculas/pelicula_form.html",  # ← MISMA PLANTILLA, MODO EDICIÓN
+            "app/peliculas/pelicula_form.html",  # ← MISMA PLANTILLA, MODO EDICIÓN
             {
                 "request": request,
                 "titulo": f"Editar Película: {pelicula.titulo}",
