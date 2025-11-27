@@ -134,7 +134,7 @@ def homepage_cartelera(
     )
 
     return templates.TemplateResponse(
-        "peliculas/index.html",
+        "app/peliculas/index.html",
         {
             "request": request,
             "titulo": get_home_title(),
