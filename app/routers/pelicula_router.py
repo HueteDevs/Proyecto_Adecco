@@ -443,7 +443,7 @@ async def import_peliculas_csv_endpoint(
             # Si hay errores, mostramos la página de inicio con un mensaje de error y el detalle
             error_message = f"Se importaron {success_count} registros. Hubo errores en {len(errors)} filas."
             return templates.TemplateResponse(
-                "peliculas/index.html", 
+                "app/peliculas/index.html", 
                 {
                     "request": request, 
                     "titulo": "Error en Importación",
@@ -502,7 +502,7 @@ async def import_peliculas_json_endpoint(
              # Si hay errores, mostramos la página de inicio con un mensaje de error y el detalle
             error_message = f"Se importaron {success_count} registros. Hubo errores en {len(errors)} filas."
             return templates.TemplateResponse(
-                "peliculas/index.html", 
+                "app/peliculas/index.html", 
                 {
                     "request": request, 
                     "titulo": "Error en Importación",
