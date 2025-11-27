@@ -2,8 +2,8 @@ from fastapi import Depends, HTTPException, status, APIRouter
 from sqlalchemy import select
 from sqlalchemy.orm import Session
 from app.database import get_db
-from app.models.horario import Horario
-from app.schemas.horario import HorarioResponse, HorarioCreate, HorarioUpdate, HorarioPatch
+from app.models import Horario
+from app.schemas import HorarioResponse, HorarioCreate, HorarioUpdate, HorarioPatch
 
 
 
