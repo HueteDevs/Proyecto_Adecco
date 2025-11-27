@@ -15,11 +15,9 @@ router = APIRouter(prefix="/horarios", tags=["web"])
 
 @router.get("", response_class=HTMLResponse)
 def list_artists(request: Request, db: Session = Depends(get_db)):
-    artists = db.execute(select(Horario)).scalars().all()
-   
-"""
+    horarios = db.execute(select(Horario)).scalars().all()
+
     return templates.TemplateResponse(
         "horarios/list.html",
         {"request": request, "horarios": horarios}
     )
-"""
