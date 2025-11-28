@@ -11,7 +11,7 @@ from app.schemas import HorarioResponse, HorarioCreate, HorarioUpdate, HorarioPa
 
 router = APIRouter(prefix="/api/horarios", tags=["horarios"])
 #GET-Obtener todas los horarios
-@app.get("/api/horarios", response_model=list[HorarioResponse])
+@router.get("/api/horarios", response_model=list[HorarioResponse])
 def find_all(db: Session = Depends(get_db)):
     return db.execute(select(Horario)).scalars().all()
 
@@ -23,7 +23,7 @@ def find_all(db: Session = Depends(get_db)):
 
 #GET - Obtener un horario por id
 
-@app.get("/api/horarios/{id}",response_model=HorarioResponse)
+@router.get("/api/horarios/{id}",response_model=HorarioResponse)
 def find_by_id(id:int, db: Session = Depends(get_db)):
     horario = db.execute(
         select(Horario).where(Horario.id == id)
@@ -39,7 +39,7 @@ def find_by_id(id:int, db: Session = Depends(get_db)):
 
 
 #POST - Crear un nuev horario
-@app.post("/api/horarios", response_model=HorarioResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/api/horarios", response_model=HorarioResponse, status_code=status.HTTP_201_CREATED)
 def create(horario_dto: HorarioCreate, db: Session = Depends(get_db)):
     #Hacemos las validaciones necesarias
     if  horario_dto.pelicula_id is not None and horario_dto.pelicula_id < 0:
@@ -74,7 +74,7 @@ def create(horario_dto: HorarioCreate, db: Session = Depends(get_db)):
     return horario
 
 #PUT - actualizar completamente un horario
-@app.put("/api/horarios/{id}", response_model=HorarioResponse)
+@router.put("/api/horarios/{id}", response_model=HorarioResponse)
 def update_full(id: int, horario_dto: HorarioUpdate, db: Session = Depends(get_db)):
     horario = db.execute(
         select(Horario).where(Horario.id == id)
@@ -109,7 +109,7 @@ def update_full(id: int, horario_dto: HorarioUpdate, db: Session = Depends(get_d
     return horario
 
 
-@app.patch("/api/horarios/{id}", response_model=HorarioResponse)
+@router.patch("/api/horarios/{id}", response_model=HorarioResponse)
 def update_parcial(id:int, horario_dto: HorarioPatch, db: Session = Depends(get_db)):
     # buscar el horario por id
     
@@ -163,7 +163,7 @@ def update_parcial(id:int, horario_dto: HorarioPatch, db: Session = Depends(get_
 
 #Delete - eliminar un horario por id
 
-@app.delete("/api/horarios/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/api/horarios/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_by_id(id: int, db: Session= Depends(get_db)):
     #busca el horario por id
     horario = db.execute(

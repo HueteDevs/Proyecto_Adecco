@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Horarios</title>
+</head>
+<body>
+    <h1>Listado de Horarios</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID Horario</th>
+                <th>ID Pelicula</th>
+                <th>ID Sala</th>
+                <th>Hora</th>
+                <th>Disponibilidad</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for horario in horarios %}
+            <tr>
+                <td>{{ horario.id}} </td>
+                <td>{{ horario.pelicula_id}} </td>
+                <td>{{ horario.sala_id}} </td>
+                <td>{{ horario.hora}} </td>
+                <td>{{ horario.disponible}} </td>
+
+            </tr>
+        </tbody>
+    </table>
+    
+</body>
+</html>

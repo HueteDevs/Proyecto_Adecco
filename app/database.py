@@ -1,3 +1,6 @@
+"""
+Configuración de la base de datos
+"""
 from sqlalchemy import create_engine
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
