@@ -45,7 +45,7 @@ def update_full(id: int, genre_dto:GenreUpdate, db: Session = Depends(get_db)):
         detail=f"No se ha encontrado el género id {id}"
     )
     
-    update_data = song_dto.model_dump()
+    update_data = genre_dto.model_dump()
     
     for field, value in update_data.items():
         setattr(name_genre, field, value)
