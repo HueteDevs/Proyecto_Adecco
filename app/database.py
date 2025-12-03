@@ -72,11 +72,22 @@ def init_db():
         
     #]
     
-    #default_generos = [
+    
+    # # default_genres = [
+    #     GenreORM(genre_id=1, name_genre="Acción"),
+    #     GenreORM(genre_id=2, name_genre="Comedia"),
+    #     GenreORM(genre_id=3, name_genre="Drama"),
+    #     GenreORM(genre_id=4, name_genre="Terror"),
+    #     GenreORM(genre_id=5, name_genre="Anime"),
+    #     GenreORM(genre_id=6, name_genre="Animación"),
+    #     GenreORM(genre_id=7, name_genre="Comedia Negra")
         
-    #]
+    # #]
     
-    
+#     db.add_all(default_genres)
+#     db.commit() 
+# finally:
+#     db.close()
 
 
 
