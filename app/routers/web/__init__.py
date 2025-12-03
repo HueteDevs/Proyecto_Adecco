@@ -2,6 +2,7 @@
 Router de páginas web
 Contienen los endpoints que renderizan HTMLs
 """
+# Habría que incluír el archivo home
 from app.routers.web import pelicula
 from app.routers.web import sala
 from app.routers.web import venta
