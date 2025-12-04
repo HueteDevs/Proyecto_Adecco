@@ -1,12 +1,12 @@
-from pydantic import Basemodel, ConfigDict, field_validator
+from pydantic import BaseModel, ConfigDict, field_validator
 
-class GenreResponse(Basemodel):
+class GenreResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     
     id: int
     name_genre: str
     
-class GenreCreate(Basemodel):
+class GenreCreate(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     
     name_genre: str
@@ -19,7 +19,7 @@ class GenreCreate(Basemodel):
         return v.strip()
         
 
-class GenreUpdate(Basemodel):
+class GenreUpdate(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     
     name_genre= str
@@ -32,7 +32,7 @@ class GenreUpdate(Basemodel):
         return v.strip()
     
 
-class GenrePatch(Basemodel):
+class GenrePatch(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
     name_genre: str | None = None
