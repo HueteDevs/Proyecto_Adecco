@@ -9,15 +9,21 @@ from app.routers.web import venta
 from app.routers.api import horarios
 from app.routers.api import genre
 
+from app.routers.api import salas
 from fastapi import APIRouter
 
-#router pricipal
+# router principal
+router = APIRouter()    
 
-router = APIRouter()
 
 #incluir router de horarios en router principal
 router.include_router(pelicula.router)
 router.include_router(sala.router)
 router.include_router(venta.router)
 router.include_router(horarios.router)
+
+
+
+# incluir router de salas en router principal
+router.include_router(salas.router)
 router.include_router(genre.router)
