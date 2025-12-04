@@ -86,7 +86,7 @@ def delete_by_id(id: int, db: Session = Depends(get_db)):
     ).scalar_one_or_none()
     
     if not genre:
-        raise(
+        raise HTTPException(
             status_code=status.HTTP_404_NOT_FOUND,
             detail=f"No se ha encontrado el género con id {id}"  
         )
