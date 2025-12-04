@@ -35,11 +35,11 @@ class GenreUpdate(Basemodel):
 class GenrePatch(Basemodel):
     model_config = ConfigDict(from_attributes=True)
 
-    name_genre: str ! None = None
+    name_genre: str | None = None
     
     @field_validator("name_genre")
     @classmethod
-    def validate_not_empty(cls, v: str | None) -> str ! None:
+    def validate_not_empty(cls, v: str | None) -> str | None:
         if v is None:
             return None
         
