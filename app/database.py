@@ -1,12 +1,12 @@
 """
 Configuración de la base de datos
 """
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, select
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
 # Configuración Base de datos para Ventas
 # Motor de conexión a BBDD
-engine  = create_engine('sqlite:///venta.db', 
+engine  = create_engine('sqlite:///cartelera.db', 
           echo=True, # echo True para mostrar SQL solo en desarrollo
           connect_args={"check_same_thread": False}  # Puedes utilizar la conexión desde varios hilos
           )
@@ -39,55 +39,58 @@ def init_db():
     Sólo crea las cosas si no existen ya en la base de datos.
     """
     
-    from app.models import Pelicula, Sala, Horario, Venta, Genero
+    from app.models import SalaORM, Horario, Genre
     
     #crear todas las tablas
     Base.metadata.create_all(engine)
     
     db = SessionLocal()
-    #try:
-    #    existing_peliculas = 
-    
-    # if existing_peliculas:
-    #        return
-    
-    #default_peliculas = [
+    try:
+        existing_horarios = db.execute(select(Horario)).scalars().all()
         
-    #]
-    
-    
-    #default_salas = [
         
-    #]
+        if existing_horarios:
+            return
     
-    
-    
-    #default_horarios = [
         
-    #]
+    
+    
+        default_salas = [
+            SalaORM(nombre="Sala1",capacidad=20,tipo="2d",precio=8.90),
+            SalaORM(nombre="Sala2",capacidad=40,tipo="IMAX",precio=11.90),
+            SalaORM(nombre="Sala3",capacidad=25,tipo="3D",precio=9.00),
+            SalaORM(nombre="Sala4",capacidad=20,tipo="2d",precio=8.90),
+        ]
+        db.add_all(default_salas)
+        db.commit() 
+    
+    
+        default_horarios = [
+         Horario(pelicula_id=1, sala_id=1, hora = "22:00", disponible=True ),
+         Horario(pelicula_id=2, sala_id=2, hora = "16:00", disponible=False ),
+         Horario(pelicula_id=3, sala_id=3, hora = "18:30", disponible=True ),
+         Horario(pelicula_id=4, sala_id=4, hora = "19:50", disponible=False ),
+        ]
+        db.add_all(default_horarios)
+        db.commit() 
     
     
     
-    #default_ventas = [
+        default_genres = [
+            Genre(genre_id=1, name_genre="Acción"),
+            Genre(genre_id=2, name_genre="Comedia"),
+            Genre(genre_id=3, name_genre="Drama"),
+            Genre(genre_id=4, name_genre="Terror"),
+            Genre(genre_id=5, name_genre="Anime"),
+            Genre(genre_id=6, name_genre="Animación"),
+            Genre(genre_id=7, name_genre="Comedia Negra")
         
-    #]
+        ]
     
-    
-    # # default_genres = [
-    #     GenreORM(genre_id=1, name_genre="Acción"),
-    #     GenreORM(genre_id=2, name_genre="Comedia"),
-    #     GenreORM(genre_id=3, name_genre="Drama"),
-    #     GenreORM(genre_id=4, name_genre="Terror"),
-    #     GenreORM(genre_id=5, name_genre="Anime"),
-    #     GenreORM(genre_id=6, name_genre="Animación"),
-    #     GenreORM(genre_id=7, name_genre="Comedia Negra")
-        
-    # #]
-    
-#     db.add_all(default_genres)
-#     db.commit() 
-# finally:
-#     db.close()
+        db.add_all(default_genres)
+        db.commit() 
+    finally:
+         db.close()
 
 
 

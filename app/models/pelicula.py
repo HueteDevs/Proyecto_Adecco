@@ -4,7 +4,7 @@
 
 from sqlalchemy import String, Integer, Boolean, ForeignKey, JSON
 from sqlalchemy.orm import Mapped, mapped_column, relationship
-from app.database.db import Base # Importamos la Base declarativa
+from app.database import Base # Importamos la Base declarativa
 
 # Importación de tipo para la relación bidireccional
 from typing import TYPE_CHECKING
