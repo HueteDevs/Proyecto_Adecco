@@ -14,4 +14,3 @@ from app.models.sala import SalaORM
 
 __all__ = [Horario, SalaORM, Genre, PeliculaORM] 
 
-__all__ = [Horario]
