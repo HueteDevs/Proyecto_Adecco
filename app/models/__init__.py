@@ -2,6 +2,8 @@
 Modelos de base de datos (SQLAlchemy)
 """
 
+# Todos los modelos han sido incluídos (Kary)
+
 from app.models.horario import Horario
 from app.models.genre import Genre
 from app.models.pelicula import PeliculaORM
@@ -12,3 +14,4 @@ from app.models.sala import SalaORM
 
 __all__ = [Horario, SalaORM, Genre, PeliculaORM] 
 
+__all__ = [Horario]
