@@ -77,15 +77,16 @@ def init_db():
     
     
         default_genres = [
-            Genre(genre_id=1, name_genre="Acción"),
-            Genre(genre_id=2, name_genre="Comedia"),
-            Genre(genre_id=3, name_genre="Drama"),
-            Genre(genre_id=4, name_genre="Terror"),
-            Genre(genre_id=5, name_genre="Anime"),
-            Genre(genre_id=6, name_genre="Animación"),
-            Genre(genre_id=7, name_genre="Comedia Negra")
+             Genre(id=1, name_genre="Acción"),
+            Genre(id=2, name_genre="Comedia"),
+            Genre(id=3, name_genre="Drama"),
+            Genre(id=4, name_genre="Terror"),
+            Genre(id=5, name_genre="Anime"),
+            Genre(id=6, name_genre="Animación"),
+            Genre(id=7, name_genre="Comedia Negra")
+]
         
-        ]
+        
     
         db.add_all(default_genres)
         db.commit() 

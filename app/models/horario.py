@@ -7,7 +7,7 @@ class Horario(Base):
     #clave primaria
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     #relacion ManyToOne con Peliculas
-    pelicula_id: Mapped[int] = mapped_column(ForeignKey("peliculas.id"),nullable=False)
+    pelicula_id: Mapped[int] = mapped_column(Integer,nullable=False)
     #relacion ManyToOne con Salas
     sala_id: Mapped[int] = mapped_column(ForeignKey("salas.id"), nullable=False)
     hora: Mapped[str] = mapped_column(String, nullable=False)

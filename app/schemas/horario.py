@@ -5,16 +5,13 @@
 
 from pydantic import BaseModel, ConfigDict
 
-from app.schemas import SalaResponse
-from app.schemas.pelicula import PeliculaBase
-
 
 class HorarioResponse(BaseModel):
     
     model_config = ConfigDict(from_attributes=True) #Traduce los atributos de SQLAlchemy para Pydantic
     id: int
-    pelicula_id: PeliculaBase
-    sala_id: SalaResponse
+    pelicula_id: int
+    sala_id: int
     hora: str
     disponible: bool
 

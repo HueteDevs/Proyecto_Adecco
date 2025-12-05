@@ -3,7 +3,7 @@ from fastapi import APIRouter, Request
 from fastapi.responses import HTMLResponse
 
 # Configurar jinja2
-templates = Jinja2Templates(directory = "proyectoReyes/proyectoPython/app/templates")
+templates = Jinja2Templates(directory = "app/templates")
 
 # Crear router para rutas web de home
 router = APIRouter(tags=["web"])

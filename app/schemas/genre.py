@@ -22,7 +22,7 @@ class GenreCreate(BaseModel):
 class GenreUpdate(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     
-    name_genre= str
+    name_genre: str | None = None
     
     @field_validator("name_genre")
     @classmethod
