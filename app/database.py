@@ -77,7 +77,7 @@ def init_db():
     
     
         default_genres = [
-             Genre(id=1, name_genre="Acción"),
+            Genre(id=1, name_genre="Acción"),
             Genre(id=2, name_genre="Comedia"),
             Genre(id=3, name_genre="Drama"),
             Genre(id=4, name_genre="Terror"),
