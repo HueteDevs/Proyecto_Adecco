@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <name_genre>{% if genre %} Editar género{% else %} Crear género{% endif %}</name_genre>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="card-title mb-0">
+                            <i class="fa-thin fa-file-signature{% if genre %}marker{% else %}plus{% endif %}"></i>
+                            {% if genre %}Editar género{% else %}Crear nuevo género{% endif %}
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        {% if errors %}
+                        <div class="alert alert-danger" role="alert">
+                            <h5 class="alert-heading">
+                                <i class="fa-thin fa-triangle-exclamation"></i> Errores de validación:
+                            </h5>
+                            <ul class="mb-0">
+                                {% for error in errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+
+                        <form method="post" action="{% if genre %}/genres/{{ genre.id }}/edit{% else %}/genres/new{% endif %}">
+                            <div class="mb-3">
+                                <label for="name_genre" class="form-label">Nombre género <span class="text-danger">*</span></label>
+                                <input
+                                    type="text"
+                                    class="form-control"
+                                    id="name_genre"
+                                    name_genre="name_genre"
+                                    value="{% if form_data %}{{ form_data.get('name_genre', '') }}{% elif genre %}{{ genre.name_genre }}{% endif %}"
+                                    required
+                                    maxlength="200"
+                                >
+                                <div class="form-text">El título del género (máximo 200 caracteres)</div>
+                            </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <a href="/genres" class="btn btn-secondary">
+                                    <i class="fa-thin fa-arrow-left-long me-2"></i>Cancelar
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa-thin fa-floppy-disk me-2"></i>{% if genre %}Actualizar{% else %}Crear{% endif %} género
+                                </button>
+                            </div> 
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+</body>
+</html>
