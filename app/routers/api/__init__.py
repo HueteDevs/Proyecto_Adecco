@@ -9,7 +9,7 @@ Contiene los endpoints que devuelven datos en JSON
 from app.routers.api import horarios
 from app.routers.api import genre
 from app.routers.api import salas
-
+from app.routers.api import ventas
 from fastapi import APIRouter
 
 # router principal
@@ -19,6 +19,6 @@ router = APIRouter()
 #incluir router de horarios en router principal
 #router.include_router(pelicula.router)
 router.include_router(salas.router)
-#router.include_router(ventas.router)
+router.include_router(ventas.router)
 router.include_router(horarios.router)
 router.include_router(genre.router)

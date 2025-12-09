@@ -22,6 +22,6 @@ router.include_router(salas.router)
 router.include_router(horarios.router)
 
 
-
+router.include_router(genre.router)
 router.include_router(home.router)
 
