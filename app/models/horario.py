@@ -1,6 +1,7 @@
 from sqlalchemy import ForeignKey, Integer, String, Boolean
-from sqlalchemy.orm import Mapped, mapped_column
+from sqlalchemy.orm import Mapped, mapped_column, relationship
 from app.database import Base
+from app.models.sala import SalaORM
 #modelo de la tabla horario( se crea un solo modelo)
 class Horario(Base):
     __tablename__ = "horarios" #nombre de la tabla en bd
@@ -10,6 +11,7 @@ class Horario(Base):
     pelicula_id: Mapped[int] = mapped_column(Integer,nullable=False)
     #relacion ManyToOne con Salas
     sala_id: Mapped[int] = mapped_column(ForeignKey("salas.id"), nullable=False)
+    sala: Mapped["SalaORM"] = relationship("SalaORM")
     hora: Mapped[str] = mapped_column(String, nullable=False)
     disponible:Mapped[bool] = mapped_column(Boolean, nullable=False)
     

@@ -39,7 +39,7 @@ def init_db():
     Sólo crea las cosas si no existen ya en la base de datos.
     """
     
-    from app.models import SalaORM, Horario, Genre
+    from app.models import SalaORM, Horario, Genre, Venta, MetodoPago
     
     #crear todas las tablas
     Base.metadata.create_all(engine)
@@ -89,7 +89,17 @@ def init_db():
         
     
         db.add_all(default_genres)
-        db.commit() 
+        db.commit()
+        
+        
+        default_ventas = [
+            Venta(horario_id=1, precio_total=20.60,cantidad=2, metodo_pago=MetodoPago.EFECTIVO),
+            Venta(horario_id=2, precio_total=30.60,cantidad=5, metodo_pago=MetodoPago.TARJETA),
+            Venta(horario_id=3, precio_total=40.60,cantidad=4, metodo_pago=MetodoPago.EFECTIVO)           
+        ]
+        
+        db.add_all(default_ventas)
+        db.commit()
     finally:
          db.close()
 

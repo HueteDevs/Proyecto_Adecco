@@ -1,9 +1,9 @@
-from schemas.venta import VentaResponse, VentaCreate, VentaUpdate, VentaPatch
+from app.schemas.venta import VentaResponse, VentaCreate, VentaUpdate, VentaPatch
 from fastapi import HTTPException,status,Depends,APIRouter
 from sqlalchemy.orm import Session
 from sqlalchemy import select
-from models.venta import Venta
-from database import get_db
+from app.models.venta import Venta
+from app.database import get_db
 
 router = APIRouter(
     prefix="/api/ventas",
@@ -13,7 +13,7 @@ router = APIRouter(
 # ENDPOINTS CRUD
 
 # GET - obtener TODAS las ventas
-@router.get("/", response_model=list[VentaResponse])
+@router.get("/api/ventas", response_model=list[VentaResponse])
 def find_all(db: Session = Depends(get_db)):
     # db.execute(): ejecuta la consulta
     # select(Venta): crea consulta SELECT * FROM venta
@@ -21,7 +21,7 @@ def find_all(db: Session = Depends(get_db)):
     # .all(): obtiene los resultados como lista
     return db.execute(select(Venta)).scalars().all()
 # GET - obtener UNA venta por id
-@router.get("/{id}", response_model=VentaResponse)
+@router.get("api/ventas/{id}", response_model=VentaResponse)
 def find_by_id(id: int, db: Session = Depends(get_db)):
     # busca la venta con el id de la ruta
     # .scalar_one_or_none(): devuelve el objeto o None si no existe
@@ -37,7 +37,7 @@ def find_by_id(id: int, db: Session = Depends(get_db)):
     return venta
 
 # POST - crear una nueva venta
-@router.post("/", response_model=VentaResponse, status_code=status.HTTP_201_CREATED)
+@router.post("/api/ventas", response_model=VentaResponse, status_code=status.HTTP_201_CREATED)
 def create(venta_dto: VentaCreate, db: Session = Depends(get_db)):
     # TODO: obtener precio_unitario a partir de horario_id
     precio_total = 8 * venta_dto.cantidad
@@ -75,7 +75,7 @@ def create(venta_dto: VentaCreate, db: Session = Depends(get_db)):
     return venta # devuelve la venta creada
 
 # PUT -actualizar COMPLETAMENTE una venta
-@router.put("/{id}", response_model=VentaResponse)
+@router.put("/api/ventas/{id}", response_model=VentaResponse)
 def update_full(id: int, venta_dto: VentaUpdate, db: Session = Depends(get_db)):
     
     # Busca la venta por id
@@ -125,7 +125,7 @@ def update_full(id: int, venta_dto: VentaUpdate, db: Session = Depends(get_db)):
     return venta # devuelve la venta creada
 
 # PATCH -actualizar parcialmente una venta
-@router.patch("/{id}", response_model=VentaResponse)
+@router.patch("/api/ventas/{id}", response_model=VentaResponse)
 def update_venta(id: int, venta_dto: VentaPatch, db: Session = Depends(get_db)):
     # Busca la venta por id
     venta=db.execute(
@@ -154,7 +154,7 @@ def update_venta(id: int, venta_dto: VentaPatch, db: Session = Depends(get_db)):
     return venta # devuelve la venta creada
 
 # DELETE -borrar una venta por id
-@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/api/ventas/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def borrar_venta(id: int, db: Session = Depends(get_db)):
     # busca la venta con el id de la ruta
     # .scalar_one_or_none(): devuelve el objeto o None si no existe

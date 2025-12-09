@@ -1,9 +1,9 @@
 from sqlalchemy import Float, ForeignKey,Integer
-from database import Base
+from app.database import Base
 from sqlalchemy import Enum as SQLEnum
-from sqlalchemy.orm import Mapped,mapped_column
+from sqlalchemy.orm import Mapped,mapped_column,relationship
 from enum import Enum
-
+from app.models import Horario
 
 
 # MODELO BASE DE DATOS (sqlalchemy)
@@ -21,6 +21,7 @@ class Venta(Base):
     id: Mapped[int] = mapped_column(Integer, primary_key=True, autoincrement=True)
     # requierido, RELACION CON IDs de horario
     horario_id:Mapped[int] = mapped_column(ForeignKey("horarios.id"), nullable=False)
+    horario: Mapped["Horario"] = relationship("Horario")
     # requierido, Precio total (haremos el cálculo con el precio base de las salas y la cantidad)
     precio_total: Mapped[float] = mapped_column(Float, nullable=False)
     # requerido.

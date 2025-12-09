@@ -1,4 +1,4 @@
-from models import MetodoPago 
+from app.models.venta import MetodoPago 
 from pydantic import BaseModel, ConfigDict
 
 # Schema para TODAS las respuestas de la API

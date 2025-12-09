@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Ventas</title>
+</head>
+<body>
+    <h1>Listado de Ventas</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID Venta</th>
+                <th>ID Horario</th>
+                <th>Precio Total</th>
+                <th>Cantidad</th>
+                <th>Metodo de Pago</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for venta in ventas %}
+            <tr>
+                <td>{{ venta.id}} </td>
+                <td>{{ venta.horario_id}} </td>
+                <td>{{ venta.precio_total}} </td>
+                <td>{{ venta.cantidad}} </td>
+                <td>{{ venta.metodo_pago}} </td>
+
+            
+
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    
+</body>
+</html>
