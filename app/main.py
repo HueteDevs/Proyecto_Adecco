@@ -19,7 +19,7 @@ from app.routers.api import router as api_router
 from app.routers.web import router as web_router
 
 # crea la instancia de la aplicacion FastAPI
-app = FastAPI(title="CinePython", version="1.0.0")
+app = FastAPI(title="Claquet APP", version="1.0.0")
 
 # inicializa la base de datos
 init_db()

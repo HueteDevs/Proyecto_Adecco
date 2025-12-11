@@ -1,6 +1,6 @@
 from fastapi import Depends, HTTPException, status, APIRouter
 from sqlalchemy import select
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload
 from app.database import get_db
 from app.models import Horario
 from app.schemas import HorarioResponse, HorarioCreate, HorarioUpdate, HorarioPatch
@@ -13,7 +13,8 @@ router = APIRouter(prefix="/api/horarios", tags=["horarios"])
 #GET-Obtener todas los horarios
 @router.get("/api/horarios", response_model=list[HorarioResponse])
 def find_all(db: Session = Depends(get_db)):
-    return db.execute(select(Horario)).scalars().all()
+    return db.execute(select(Horario).options(joinedload(Horario.sala))
+        ).scalars().unique().all
 
 #db.execute(): ejecuta la consulta
     #select(Song): crea consulta SELECT * FROM Song
