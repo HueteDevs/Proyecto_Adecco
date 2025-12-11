@@ -7,7 +7,7 @@ from app.database import get_db
 from app.models import SalaORM
 
 
-templates = Jinja2Templates(directory="proyectoReyes/proyectoPython/app/templates")
+templates = Jinja2Templates(directory="app/templates")
 
 router = APIRouter(prefix="/salas", tags=["web"])
 
