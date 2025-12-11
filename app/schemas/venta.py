@@ -1,5 +1,6 @@
 from app.models.venta import MetodoPago 
 from pydantic import BaseModel, ConfigDict
+from app.schemas import HorarioResponse
 
 # Schema para TODAS las respuestas de la API
  # Usos:
@@ -12,6 +13,7 @@ class VentaResponse(BaseModel):
      
     id: int
     horario_id: int
+    horario: HorarioResponse
     precio_total: float
     cantidad: int
     metodo_pago: MetodoPago
