@@ -10,8 +10,10 @@ from app.schemas import HorarioResponse, HorarioCreate, HorarioUpdate, HorarioPa
 #crear router para endpoints
 
 router = APIRouter(prefix="/api/horarios", tags=["horarios"])
+
+
 #GET-Obtener todas los horarios
-@router.get("/api/horarios", response_model=list[HorarioResponse])
+@router.get("", response_model=list[HorarioResponse])
 def find_all(db: Session = Depends(get_db)):
     return db.execute(select(Horario).options(joinedload(Horario.sala))
         ).scalars().unique().all
@@ -24,10 +26,11 @@ def find_all(db: Session = Depends(get_db)):
 
 #GET - Obtener un horario por id
 
-@router.get("/api/horarios/{id}",response_model=HorarioResponse)
+@router.get("/{id}",response_model=HorarioResponse)
 def find_by_id(id:int, db: Session = Depends(get_db)):
     horario = db.execute(
         select(Horario).where(Horario.id == id)
+        .options(joinedload(Horario.sala))
     ).scalar_one_or_none()
     
     if not horario:
@@ -40,82 +43,64 @@ def find_by_id(id:int, db: Session = Depends(get_db)):
 
 
 #POST - Crear un nuev horario
-@router.post("/api/horarios", response_model=HorarioResponse, status_code=status.HTTP_201_CREATED)
+@router.post("", response_model=HorarioResponse, status_code=status.HTTP_201_CREATED)
 def create(horario_dto: HorarioCreate, db: Session = Depends(get_db)):
-    #Hacemos las validaciones necesarias
-    if  horario_dto.pelicula_id is not None and horario_dto.pelicula_id < 0:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="La pelicula_id no puede ser negativa"
-        )
-        
-    if horario_dto.sala_id is not None and horario_dto.sala_id < 0:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="La sala_id no puede ser negativa"
-        )
-    
-    if not horario_dto.hora.strip():
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="La hora no puede estar vacia"
-        )
 
     #Crear el objeto horario
     horario = Horario(
         pelicula_id=horario_dto.pelicula_id,
         sala_id=horario_dto.sala_id,
-        hora=horario_dto.hora.strip(),
+        hora=horario_dto.hora,
         disponible=horario_dto.disponible
     )
     
     db.add(horario)
     db.commit()
     db.refresh(horario)
-    return horario
+    
+    horario_con_sala = db.execute(
+        select(Horario)
+        .where(Horario.id == horario.id)
+        .options(joinedload(Horario.sala))
+    ).scalar_one()
+    
+    return horario_con_sala
 
 #PUT - actualizar completamente un horario
-@router.put("/api/horarios/{id}", response_model=HorarioResponse)
+@router.put("/{id}", response_model=HorarioResponse)
 def update_full(id: int, horario_dto: HorarioUpdate, db: Session = Depends(get_db)):
     horario = db.execute(
-        select(Horario).where(Horario.id == id)
+        select(Horario).where(Horario.id == id).options(joinedload(Horario.sala))
     ).scalar_one_or_none()
     
-    if  horario_dto.pelicula_id is not None and horario_dto.pelicula_id < 0:
+    # si no existe, devuelve 404
+    
+    if not horario:
         raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="La pelicula_id no puede ser negativa"
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail=f"No se ha encontrado la canción con id {id}"
         )
         
-    if horario_dto.sala_id is not None and horario_dto.sala_id < 0:
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="La sala_id no puede ser negativa"
-        )
+    # guarda el diccionario sacado de song_dto
+    update_data = horario_dto.model_dump()
     
-    if not horario_dto.hora.strip():
-        raise HTTPException(
-            status_code=status.HTTP_400_BAD_REQUEST,
-            detail="La hora no puede estar vacia"
-        )
-    
-    #Actualizar todos los campos
-    horario.pelicula_id = horario_dto.pelicula_id
-    horario.sala_id = horario_dto.sala_id
-    horario.hora = horario_dto.hora.strip()
-    horario.disponible = horario_dto.disponible
+   #bucle para asignar el valor del diccionario a cada atributo
+        
+    for field, value in update_data.items():
+        setattr(horario, field, value)
     
     db.commit()
     db.refresh(horario)
     return horario
 
 
-@router.patch("/api/horarios/{id}", response_model=HorarioResponse)
+@router.patch("/{id}", response_model=HorarioResponse)
 def update_parcial(id:int, horario_dto: HorarioPatch, db: Session = Depends(get_db)):
     # buscar el horario por id
     
     horario = db.execute(
         select(Horario).where(Horario.id == id)
+        .options(joinedload(Horario.sala))
     ).scalar_one_or_none()
     
     # si no existe, error 404
@@ -126,45 +111,18 @@ def update_parcial(id:int, horario_dto: HorarioPatch, db: Session = Depends(get_
             detail=f"No se ha encontrado un horario con la id {id}"
         )
     
-    #actualizar solo los campos enviados
+    update_data = horario_dto.model_dump(exclude_unset=True)
     
-    if horario_dto.pelicula_id is not None:
-        if  horario_dto.pelicula_id < 0:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Tiene que haber una pelicula y con un numero valido"
-            )
-    
-        horario.pelicula_id = horario_dto.pelicula_id
-    
-    if horario_dto.sala_id is not None:
-        if horario_dto.sala_id < 0:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Tiene que haber una sala y con un numero valido"
-            )
-    
-        horario.sala_id = horario_dto.sala_id
-    
-    if horario_dto.hora is not None:
-        if not horario_dto.hora.strip():
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="La hora no puede estar vacia"
-            )
-        horario.hora = horario_dto.hora.strip()
-    
-    if horario_dto.disponible is not None:
-        horario.disponible = horario_dto.disponible
-    
+    for field, value in update_data.items():
+        setattr(horario, field, value)
+        
     db.commit()
-    
     db.refresh(horario)
     return horario
 
 #Delete - eliminar un horario por id
 
-@router.delete("/api/horarios/{id}", status_code=status.HTTP_204_NO_CONTENT)
+@router.delete("/{id}", status_code=status.HTTP_204_NO_CONTENT)
 def delete_by_id(id: int, db: Session= Depends(get_db)):
     #busca el horario por id
     horario = db.execute(

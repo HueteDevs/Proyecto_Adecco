@@ -55,6 +55,31 @@ class HorarioUpdate(BaseModel):
     hora: str
     disponible: bool
 
+    @field_validator("pelicula_id")
+    @classmethod
+    def validate_pelicula_id_positive(cls, v: int) -> int:
+        if v < 1:
+            raise ValueError("El id de la pelicula debe ser un número positivo")
+        
+        return v
+    
+    @field_validator("sala_id")
+    @classmethod
+    def validate_sala_id_positive(cls, v: int) -> int:
+        if v < 1:
+            raise ValueError("El id de la sala debe ser un número positivo")
+        
+        return v
+    
+    @field_validator("hora")
+    @classmethod
+    def validate_hora_not_empty(cls, v: str) -> str:
+        if not v or not v.strip():
+            raise ValueError("Este campo no puede estar vacío")
+        
+        return v.strip()
+    
+    
 # schema para actualizacion parcial (PATCH)
 # solo se envian los campos que quieres actualizar
 class HorarioPatch(BaseModel):
@@ -64,5 +89,40 @@ class HorarioPatch(BaseModel):
     sala_id: int | None = None
     hora: str | None = None
     disponible: bool | None = None
+    
+    
+
+    @field_validator("pelicula_id")
+    @classmethod
+    def validate_pelicula_id_positive(cls, v: int | None) -> int | None:
+        if v is None:
+            return None
+        
+        if v < 1:
+            raise ValueError("El id de la pelicula debe ser un número positivo")
+        
+        return v
+    
+    @field_validator("sala_id")
+    @classmethod
+    def validate_artist_id_positive(cls, v: int | None) -> int | None:
+        if v is None:
+            return None
+        
+        if v < 1:
+            raise ValueError("El id de la sala debe ser un número positivo")
+        
+        return v
+    
+    @field_validator("hora")
+    @classmethod
+    def validate_hora_not_empty(cls, v: str | None) -> str | None:
+        if v is None:
+            return None
+        
+        if not v or not v.strip():
+            raise ValueError("La hora no puede estar vacía")
+        
+        return v.strip()
     
     
