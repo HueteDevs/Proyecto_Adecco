@@ -1,11 +1,12 @@
 from pydantic import BaseModel, ConfigDict, field_validator
 
+
 class GenreResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     
     id: int
     name_genre: str
-    
+
 class GenreCreate(BaseModel):
     model_config = ConfigDict(from_attributes=True)
     
