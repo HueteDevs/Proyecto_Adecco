@@ -3,35 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listado de Ventas</title>
+    <title>🐦‍⬛🎶 Listado de Ventas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
-    <h1>Listado de Ventas</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>ID Venta</th>
-                <th>ID Horario</th>
-                <th>Precio Total</th>
-                <th>Cantidad</th>
-                <th>Metodo de Pago</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for venta in ventas %}
-            <tr>
-                <td>{{ venta.id}} </td>
-                <td>{{ venta.horario_id}} </td>
-                <td>{{ venta.precio_total}} </td>
-                <td>{{ venta.cantidad}} </td>
-                <td>{{ venta.metodo_pago}} </td>
+    <div class="container mt-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Listado de Ventas <i class="fa-solid fa-calendar"></i><i class="fa-solid fa-clapperboard"></i></h1>
+            <a href="/ventas/new" class="btn btn-primary">
+                <i class="fa-solid fa-plus"></i> Nueva venta
+            </a>
+        </div>
 
-            
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Horario_ID</th>
+                    <th>Precio Total</th>
+                    <th>Cantidad</th>
+                    <th>Metodo de Pago</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for venta in ventas %}
+                <tr>
+                    <td>{{ venta.id }}</td>
+                    <td>{{ venta.horario_id }}</td>
+                    <td>{{ venta.precio_total }}</td>
+                    <td>{{ venta.cantidad }}</td>
+                    <td>
+                        {% if venta.metodo_pago.value == 'efectivo' %}
+                            <span class="badge bg-primary">
+                                Efectivo
+                            </span>
+                        {% elif venta.metodo_pago.value == 'tarjeta' %}
+                            <span class="badge bg-danger">
+                                Tarjeta
+                            </span>
+                        {% else %}
+                            <span class="text-body-secondary">-</span>
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="/ventas/{{ venta.id }}" class="btn btn-info"><i class="fa-solid fa-eye"></i> Ver</a>
+                        <a href="/ventas/{{ venta.id }}/edit" class="btn btn-warning">
+                            <i class="fa-solid fa-pen-to-square"></i> Editar
+                        </a>
+                        <form method="post" action="/ventas/{{ venta.id }}/delete" style="display: inline" onsubmit="return confirm('¿Estás seguro de que quieres eliminar esta venta?');">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fa-solid fa-trash-can"></i> Eliminar
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
 
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
 </html>
