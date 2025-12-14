@@ -16,7 +16,7 @@ router = APIRouter(prefix="/api/horarios", tags=["horarios"])
 @router.get("", response_model=list[HorarioResponse])
 def find_all(db: Session = Depends(get_db)):
     return db.execute(select(Horario).options(joinedload(Horario.sala))
-        ).scalars().unique().all
+        ).scalars().unique().all()
 
 #db.execute(): ejecuta la consulta
     #select(Song): crea consulta SELECT * FROM Song

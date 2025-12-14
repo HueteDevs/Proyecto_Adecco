@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if horario %} Editar horario {% else %} Crear horario {% endif %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h2 class="card-title mb-0">
+                            <i class="fa-solid fa-{% if horario %}pen-to-square{% else %}plus{% endif %}"></i>
+                            {% if horario %}Editar horario{% else %}Crear nuevo horario{% endif %}
+                        </h2>
+                    </div>
+                    <div class="card-body">
+                        {% if errors %}
+                        <div class="alert alert-danger" role="alert">
+                            <h5 class="alert-heading">
+                                <i class="fa-solid fa-triangle-exclamation"></i> Errores de validación:
+                            </h5>
+                            <ul class="mb-0">
+                                {% for error in errors %}
+                                <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+
+                        <form method="post" action="{% if horario %}/horarios/{{ horario.id }}/edit{% else %}/horarios/new{% endif %}">
+                           
+                            <div class="mb-3">
+                                <label for="pelicula_id" class="form-label">Pelicula_id <span class="text-danger">*</span></label>
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    id="pelicula_id"
+                                    name="pelicula_id"
+                                    value="{% if form_data %}{{ form_data.get('pelicula_id', '') }}{% elif horario %}{{ horario.pelicula_id }}{% endif %}"
+                                    required
+                                    min="1"
+                                >
+                                <div class="form-text">El id de la pelicula es obligatorio</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="sala_id" class="form-label">Sala_id <span class="text-danger">*</span></label>
+                                <input
+                                    type="number"
+                                    class="form-control"
+                                    id="sala_id"
+                                    name="sala_id"
+                                    value="{% if form_data %}{{ form_data.get('sala_id', '') }}{% elif horario %}{{ horario.sala_id }}{% endif %}"
+                                    required
+                                    min="1"
+                                >
+                                <div class="form-text">El id de la sala es obligatorio</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="hora" class="form-label">Hora<span class="text-danger">*</span></label>
+                                <input 
+                                    type="text" 
+                                    class="form-control"
+                                    id="hora" 
+                                    name="hora" 
+                                    value="{% if form_data %}{{ form_data.get('hora', '') }}{% elif horario %}{{ horario.hora }}{% endif %}"
+                                    required>
+                                    <div class="form-text">La hora es obligatoria</div>
+                            </div>
+
+                            <div class="mb-3">
+                                <label class="form-label">Disponible</label>
+                                <div>
+                                    <div class="form-check form-check-inline">
+                                        <input
+                                            class="form-check-input"
+                                            type="radio"
+                                            name="disponible"
+                                            id="disponible_none"
+                                            value=""
+                                            {% if form_data and form_data.get('disponible') == '' %}checked{% elif not horario or horario.disponible is none %}checked{% endif %}
+                                        >
+                                        <label class="form-check-label" for="disponible_none">
+                                            No especificado
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input
+                                            class="form-check-input"
+                                            type="radio"
+                                            name="disponible"
+                                            id="disponible_true"
+                                            value="true"
+                                            {% if form_data and form_data.get('disponible') == 'true' %}checked{% elif horario and horario.disponible is not none and horario.disponible %}checked{% endif %}
+                                        >
+                                        <label class="form-check-label" for="disponible_true">
+                                            Sí
+                                        </label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                        <input
+                                            class="form-check-input"
+                                            type="radio"
+                                            name="disponible"
+                                            id="disponible_false"
+                                            value="false"
+                                            {% if form_data and form_data.get('disponible') == 'false' %}checked{% elif horario and horario.disponible is not none and not horario.disponible %}checked{% endif %}
+                                        >
+                                        <label class="form-check-label" for="disponible_false">
+                                            No
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="d-flex justify-content-between">
+                                <a href="/horarios" class="btn btn-secondary">
+                                    <i class="fa-solid fa-arrow-left me-2"></i>Cancelar
+                                </a>
+                                <button type="submit" class="btn btn-primary">
+                                    <i class="fa-solid fa-floppy-disk me-2"></i>{% if horario %}Actualizar{% else %}Crear{% endif %} horario
+                                </button>
+                            </div> 
+                        </form>
+                    </div>  
+                </div>
+            </div>  
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+
+</body>
+</html>

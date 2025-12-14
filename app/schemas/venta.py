@@ -1,94 +1,71 @@
-from app.models.venta import MetodoPago 
+from app.models.venta import MetodoPago
 from pydantic import BaseModel, ConfigDict, field_validator
 from app.schemas import HorarioResponse
 
-# Schema para TODAS las respuestas de la API
- # Usos:
- # GET, POST, PUT, PATCH
 class VentaResponse(BaseModel):
-    
-# ConfigDict hace que Pydantic pueda crear los modelos a partir de instancias 
-# de SQLAlchemy (valida objetos ORM)
     model_config = ConfigDict(from_attributes=True)
-     
     id: int
     horario_id: int
     horario: HorarioResponse
     precio_total: float
     cantidad: int
     metodo_pago: MetodoPago
-    
-# Equema para CREAR una venta
-# No se incluye id porque se genera automáticamente
+
 class VentaCreate(BaseModel):
     model_config = ConfigDict(from_attributes=True)
-    
-    horario_id: int 
+    horario_id: int
     cantidad: int
-    metodo_pago: MetodoPago 
-    
+    metodo_pago: MetodoPago = MetodoPago.TARJETA
+
     @field_validator("horario_id", "cantidad")
     @classmethod
-    def validate_not_empty(cls, v: int) -> int:
-        if not v or not v.strip():
-            raise ValueError("Este campo no puede estar vacío")
-        return v.strip()
-    
-    @field_validator("precio_total")
-    @classmethod
-    def validate_not_empty(cls, v: float) -> float:
-        if not v or not v.strip():
-            raise ValueError("El campo precio no puede estar vacío")
-        return v.strip()
+    def validate_positive(cls, v: int) -> int:
+        if v < 1:
+            raise ValueError("El id de horario y la cantidad deben ser positivas")
+        return v
 
-
-# Esquema para actualización completa (PUT)
-# Todos los campos son obligarorios
 class VentaUpdate(BaseModel):
     model_config = ConfigDict(from_attributes=True)
-    
-    horario_id: int 
+    horario_id: int
     cantidad: int
     metodo_pago: MetodoPago
-    
+    precio_total: float
+
     @field_validator("horario_id", "cantidad")
     @classmethod
-    def validate_not_empty(cls, v: int) -> int:
-        if not v or not v.strip():
-            raise ValueError("Este campo no puede estar vacío")
-        return v.strip()
-    
+    def validate_positive(cls, v: int) -> int:
+        if v < 1:
+            raise ValueError("El id de horario y la cantidad deben ser positivas")
+        return v
 
-    
     @field_validator("precio_total")
     @classmethod
-    def validate_not_empty(cls, v: float) -> float:
-        if not v or not v.strip():
-            raise ValueError("El campo precio no puede estar vacío")
-        return v.strip()
+    def validate_precio(cls, v: float) -> float:
+        if v < 0:
+            raise ValueError("El precio total debe ser un número positivo")
+        return v
 
-# Esquema actualualización parcial (PATCH)
-# Todos los campos son opcionales.
 class VentaPatch(BaseModel):
     model_config = ConfigDict(from_attributes=True)
-    
-    horario_id: int | None = None#RELACION
+    horario_id: int | None = None
     cantidad: int | None = None
     metodo_pago: MetodoPago | None = None
-    
+    precio_total: float | None = None
+
     @field_validator("horario_id", "cantidad")
     @classmethod
-    def validate_not_empty(cls, v: int | None) -> int | None:
+    def validate_positive_optional(cls, v: int | None) -> int | None:
         if v is None:
             return None
-        
-        if not v or not v.strip():
-            raise ValueError("Este campo no puede estar vacío")
-        return v.strip()
-    
+        if v < 1:
+            raise ValueError("El id de horario y la cantidad deben ser positivas")
+        return v
+
     @field_validator("precio_total")
     @classmethod
-    def validate_not_empty(cls, v: float | None) -> float | None:
-        if not v or not v.strip():
-            raise ValueError("Este campo no puede estar vacío")
-        return v.strip()
+    def validate_precio_optional(cls, v: float | None) -> float | None:
+        if v is None:
+            return None
+        if v < 0:
+            raise ValueError("El precio debe ser un número positivo")
+        return v

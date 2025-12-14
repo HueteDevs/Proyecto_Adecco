@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de ventas</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+</head>
+<body>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow" style="width: 32rem;">
+                    <div class="card-header bg-primary text-white">
+
+                        <h1 class="card-title mb-0 text-center">
+                            Detalle de ventas
+                        </h1>
+                    </div>
+
+                    <div class="card-body">
+                        <div class="mb-3">
+                            <h5 class="text-body-secondary">ID: {{ venta.id }}</h5>
+                        </div>
+                        <div class="mb-3">
+                            <h5 class="text-body-secondary">Nombre: {{ venta.horario_id }}</h5> 
+                        </div>
+                        <div class="mb-3">
+                            <h5 class="text-body-secondary">Capacidad: {{ venta.precio_total }}</h5>       
+                        </div>
+                        <div class="mb-3">
+                            <h5 class="text-body-secondary">Tipo: {{ venta.cantidad }}</h5>
+                        </div>
+                        <div class="mb-3">
+                            <h5 class="text-body-secondary">Precio: {{ venta.metodo_pago }}</h5>
+                        </div>
+                    </div> 
+                    
+                    <div class="card-footer text-center">
+                        <a href="/ventas" class="btn btn-secondary">
+                            <i class="fa fa-arrow-left"></i> Volver a la lista
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  
+</body>
+</html>
