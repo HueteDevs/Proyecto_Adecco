@@ -34,13 +34,6 @@ class VentaCreate(BaseModel):
             raise ValueError("Este campo no puede estar vacío")
         return v.strip()
     
-    @field_validator("horario")
-    @classmethod
-    def validate_not_empty(cls, v: HorarioResponse) -> HorarioResponse:
-        if not v or not v.strip():
-            raise ValueError("El campo horario, no puede estar vacío")
-        return v.strip()
-    
     @field_validator("precio_total")
     @classmethod
     def validate_not_empty(cls, v: float) -> float:
@@ -48,12 +41,6 @@ class VentaCreate(BaseModel):
             raise ValueError("El campo precio no puede estar vacío")
         return v.strip()
 
-    @field_validator("metodo_pago")# revisar este campo porque quizá deba ser modificado, aunque está importado
-    @classmethod
-    def validate_not_empty(cls, v: MetodoPago) -> MetodoPago:
-        if not v or not v.strip():
-            raise ValueError("El campo método de pago, no puede estar vacío")
-        return v.strip()
 
 # Esquema para actualización completa (PUT)
 # Todos los campos son obligarorios
@@ -71,25 +58,13 @@ class VentaUpdate(BaseModel):
             raise ValueError("Este campo no puede estar vacío")
         return v.strip()
     
-    @field_validator("horario")
-    @classmethod
-    def validate_not_empty(cls, v: HorarioResponse) -> HorarioResponse:
-        if not v or not v.strip():
-            raise ValueError("El campo horario no puede estar vacío")
-        return v.strip()
+
     
     @field_validator("precio_total")
     @classmethod
     def validate_not_empty(cls, v: float) -> float:
         if not v or not v.strip():
             raise ValueError("El campo precio no puede estar vacío")
-        return v.strip()
-
-    @field_validator("metodo_pago")# este campo no sé si debe ser modificado, creo que está correcto porque está importado
-    @classmethod
-    def validate_not_empty(cls, v: MetodoPago) -> MetodoPago:
-        if not v or not v.strip():
-            raise ValueError("El método de pago, no puede estar vacío")
         return v.strip()
 
 # Esquema actualualización parcial (PATCH)
@@ -111,23 +86,9 @@ class VentaPatch(BaseModel):
             raise ValueError("Este campo no puede estar vacío")
         return v.strip()
     
-    @field_validator("horario")
-    @classmethod
-    def validate_not_empty(cls, v: HorarioResponse | None) -> HorarioResponse | None:
-        if not v or not v.strip():
-            raise ValueError("El campo horario no puede estar vacío")
-        return v.strip()
-    
     @field_validator("precio_total")
     @classmethod
     def validate_not_empty(cls, v: float | None) -> float | None:
-        if not v or not v.strip():
-            raise ValueError("Este campo no puede estar vacío")
-        return v.strip()
-
-    @field_validator("metodo_pago")# este campo no sé si debe ser modificado, creo que está correcto porque está importado
-    @classmethod
-    def validate_not_empty(cls, v: MetodoPago | None) -> MetodoPago |None:
         if not v or not v.strip():
             raise ValueError("Este campo no puede estar vacío")
         return v.strip()
