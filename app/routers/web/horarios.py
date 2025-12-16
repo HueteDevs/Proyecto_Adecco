@@ -133,12 +133,29 @@ def show_edit_form(request: Request, horario_id: int, db: Session = Depends(get_
                          .options(joinedload(Horario.sala))).scalar_one_or_none()
     if horario is None:
         raise HTTPException(status_code=404, detail="404 - Horario no encontrado")
-    return templates.TemplateResponse("horarios/form.html", {"request": request, "horario": horario})
+    salas = db.execute(select(SalaORM)).scalars().all()
+    return templates.TemplateResponse("horarios/form.html", {"request": request, "horario": horario, "salas": salas})
 
 
 # editar horario existente
 @router.post("/{horario_id}/edit", response_class=HTMLResponse)
-def show_edit_form(request: Request, horario_id: int, db: Session = Depends(get_db)):
+def update_horario(
+    request: Request,
+    horario_id: int,
+    pelicula_id: str = Form(...),
+    sala_id: str = Form(...),
+    hora: str = Form(...),
+    disponible: str = Form(""),
+    db: Session = Depends(get_db)
+):
+    errors = []
+    form_data = {
+        "pelicula_id": pelicula_id,
+        "sala_id": sala_id,
+        "hora": hora,
+        "disponible": disponible,
+    }
+    
     horario = db.execute(
         select(Horario)
         .where(Horario.id == horario_id)
@@ -150,10 +167,62 @@ def show_edit_form(request: Request, horario_id: int, db: Session = Depends(get_
     
     salas = db.execute(select(SalaORM)).scalars().all()
     
-    return templates.TemplateResponse(
-        "horarios/form.html",
-        {"request": request, "horario": horario, "salas": salas}
-    )
+    # validaciones
+    try:
+        peli_val = int(pelicula_id)
+        if peli_val < 1:
+            errors.append("El id de la pelicula debe ser un número positivo.")
+    except Exception:
+        errors.append("El id de la pelicula tiene que ser un entero válido.")
+
+    sala_id_value = None
+    
+    if sala_id and sala_id.strip():
+        try:
+            sala_id_value = int(sala_id.strip())
+            
+            if sala_id_value < 1:
+                errors.append("El id de la sala debe ser un número positivo.")
+            sala = db.execute(select(SalaORM).where(SalaORM.id == sala_id_value)).scalar_one_or_none()
+        except ValueError:
+            errors.append("El id de la sala tiene que ser un entero válido.")
+    else:
+        errors.append("El id de la sala es requerido")
+
+    if not hora or not hora.strip():
+        errors.append("La hora es obligatoria.")
+
+    # procesar disponible: '' -> None, 'true' -> True, 'false' -> False
+    if disponible == "true":
+        disponible_val = True
+    elif disponible == "false":
+        disponible_val = False
+    else:
+        disponible_val = None
+
+    if errors:
+        return templates.TemplateResponse(
+            "horarios/form.html",
+            {"request": request, "horario": horario, "errors": errors, "form_data": form_data, "salas": salas}
+        )
+
+    try:
+        horario.pelicula_id = peli_val
+        horario.sala_id = sala_id_value
+        horario.hora = hora.strip()
+        horario.disponible = disponible_val if disponible_val is not None else False
+        
+        db.commit()
+        db.refresh(horario)
+
+        return RedirectResponse(url=f"/horarios/{horario.id}", status_code=303)
+    except Exception as e:
+        db.rollback()
+        errors.append(f"Error al actualizar el horario: {str(e)}")
+        return templates.TemplateResponse(
+            "horarios/form.html",
+            {"request": request, "horario": horario, "errors": errors, "form_data": form_data, "salas": salas}
+        )
 
 # eliminar horario
 @router.post("/{horario_id}/delete", response_class=HTMLResponse)
