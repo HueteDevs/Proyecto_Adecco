@@ -1,45 +1,64 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listado de géneros</title>
+    <title> Listado de Géneros </title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" integrity="sha512-2SwdPD6INVrV/lHTZbO2nodKhrnDdJK9/kg2XD1r9uGqPo1cUbujc+IYdlYdEErWNu69gVcYgdxlmVmzTWnetw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body>
     <div class="container mt-5">
-        <div class="row justify-content-center mb-5">
+        <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Listado de Género <i class="fa-solid fa-calendar"></i><i class="fa-solid fa-clapperboard"></i></h1>
-            <a href="/horarios/new" class="btn btn-primary">
-                <i class="fa-solid fa-plus"></i> Nuevo Horario
+            <a href="/generos/new" class="btn btn-primary">
+                <i class="fa-solid fa-plus"></i> Nuevo Género
             </a>
         </div>
 
         <table class="table table-striped">
-            
             <thead>
-                <th>ID</th>
-                <th>Nombre_género</th>                       
+                <tr>
+                    <th>ID</th>
+                    <th>name_genre</th>
+        
+                </tr>
             </thead>
-             <tbody>
-                {% for genre in genres %}<!--debo ver si es genre in genre o genres, porque la carpeta creo que está en minúscula-->
-                    <tr>
-                        <td>{{genre.id }}</td>
-                        <td>{{ genre.name_genre}}</td>
-                            
-                        <td>
-                            <a href="/genres/{{genre.id }}">Ver 👁️</a>
-                        </td>
-                    </tr>
-                        {% endfor %}
+            <tbody>
+                {% for genre in genres %} <!--revisar si el término es genre o genres, dependiendo de la carpeta de la que debe salir la información-->
+                <tr>
+                    <td>{{ name_genre }}</td>
+                
+                    <td>
+                        {% if name_genre.disponible is none %}
+                            -
+                        {% elif name_genre.disponible %}
+                            Sí
+                        {% else %}
+                            No
+                        {% endif %}
+                    </td>
+                    <td>
+                        <a href="/géneros/{{ name_genre }}" class="btn btn-info"><i class="fa-solid fa-eye"></i> Ver</a>
+                        <a href="/géneros/{{ name_genre }}/edit" class="btn btn-warning">
+                            <i class="fa-solid fa-pen-to-square"></i> Editar
+                        </a>
+                        <form method="post" action="/géneros/{{ mane_genre }}/delete" style="display: inline" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este género?');">
+                            <button type="submit" class="btn btn-danger">
+                                <i class="fa-solid fa-trash-can"></i> Eliminar
+                            </button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
             </tbody>
-            </table>
-        </div>
+        </table>
     </div>
-</div>
-    
+    <div class="card-footer text-center">
+            <a href="/" class="btn btn-secondary">
+                <i class="fa fa-arrow-left"></i> Volver a inicio
+            </a>
+        </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
 </body>
-</html>   
-   
+</html>
