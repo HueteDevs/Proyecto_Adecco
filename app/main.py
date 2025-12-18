@@ -14,10 +14,12 @@ Configuración de la aplicación FastAPI
 #  - Endpoint raíz que delega la lógica de Películas a utils_pelicula.py
 
 from fastapi import FastAPI
+from fastapi.staticfiles import StaticFiles
 from app.database import init_db
 from app.routers.api import router as api_router
 from app.routers.web import router as web_router
 
+app.mount("/static",StaticFiles(directory="app/static"), name="static")
 # crea la instancia de la aplicacion FastAPI
 app = FastAPI(title="Claquet APP", version="1.0.0")
 
