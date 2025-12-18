@@ -11,7 +11,7 @@
     <div class="container mt-5">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <h1>Listado de Género <i class="fa-solid fa-calendar"></i><i class="fa-solid fa-clapperboard"></i></h1>
-            <a href="/generos/new" class="btn btn-primary">
+            <a href="/genres/new" class="btn btn-primary">
                 <i class="fa-solid fa-plus"></i> Nuevo Género
             </a>
         </div>
@@ -20,30 +20,21 @@
             <thead>
                 <tr>
                     <th>ID</th>
-                    <th>name_genre</th>
+                    <th>Género de película</th>
         
                 </tr>
             </thead>
             <tbody>
-                {% for genre in genres %} <!--revisar si el término es genre o genres, dependiendo de la carpeta de la que debe salir la información-->
+                {% for genre in genres %} 
                 <tr>
-                    <td>{{ name_genre }}</td>
-                
+                    <td>{{genre.id}}</td>
+                    <td>{{genre.name_genre}}</td>            
                     <td>
-                        {% if name_genre.disponible is none %}
-                            -
-                        {% elif name_genre.disponible %}
-                            Sí
-                        {% else %}
-                            No
-                        {% endif %}
-                    </td>
-                    <td>
-                        <a href="/géneros/{{ name_genre }}" class="btn btn-info"><i class="fa-solid fa-eye"></i> Ver</a>
-                        <a href="/géneros/{{ name_genre }}/edit" class="btn btn-warning">
+                        <a href="/genres/{{ genre.id }}" class="btn btn-info"><i class="fa-solid fa-eye"></i> Ver</a>
+                        <a href="/genres/{{ genre.id }}/edit" class="btn btn-warning">
                             <i class="fa-solid fa-pen-to-square"></i> Editar
                         </a>
-                        <form method="post" action="/géneros/{{ mane_genre }}/delete" style="display: inline" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este género?');">
+                        <form method="post" action="/genres/{{ genre.id }}/delete" style="display: inline" onsubmit="return confirm('¿Estás seguro de que quieres eliminar este género?');">
                             <button type="submit" class="btn btn-danger">
                                 <i class="fa-solid fa-trash-can"></i> Eliminar
                             </button>
