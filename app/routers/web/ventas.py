@@ -147,7 +147,7 @@ def venta_detail(request: Request, venta_id: int, db: Session = Depends(get_db))
     )
 
 
-@router.get("/{concert_id}/edit", response_class=HTMLResponse)
+@router.get("/{venta_id}/edit", response_class=HTMLResponse)
 def show_edit_form(request: Request, venta_id: int, db:Session = Depends(get_db)):
     venta = db.execute(
         select(Venta)
@@ -156,13 +156,13 @@ def show_edit_form(request: Request, venta_id: int, db:Session = Depends(get_db)
     ).scalar_one_or_none()
     
     if venta is None:
-        raise HTTPException(status_code=404, detail="Concierto no encontrado")
+        raise HTTPException(status_code=404, detail="Venta no encontrada")
 
     horarios = db.execute(select(Horario)).scalars().all()
     
     return templates.TemplateResponse(
             "ventas/form.html",
-            {"request": request,"venta": None, "horarios": horarios, "metodos_pagos": MetodoPago}
+            {"request": request,"venta": venta, "horarios": horarios, "metodos_pagos": MetodoPago}
         )
 
 
@@ -184,7 +184,7 @@ def update_venta(
     
     
     if venta is None:
-        raise HTTPException(status_code=404, detail="Venta no encontrado")
+        raise HTTPException(status_code=404, detail="Venta no encontrada")
     
     errors = []
     form_data = {
@@ -194,7 +194,7 @@ def update_venta(
         "metodo_pago": metodo_pago
     }
     
-    horarios = db.execute(select(Venta)).scalars().all()
+    horarios = db.execute(select(Horario)).scalars().all()
     
     horario_id_value = None
     if horario_id and horario_id.strip():
@@ -208,7 +208,7 @@ def update_venta(
         except ValueError:
             errors.append("El id del horario tiene que ser un número válido")
     else:
-        errors.append("El id del artista es requerido")
+        errors.append("El id del horario es requerido")
     
     precio_total_value = None
     if precio_total and precio_total.strip():
@@ -242,19 +242,16 @@ def update_venta(
     if errors:
         return templates.TemplateResponse(
             "ventas/form.html",
-            {"request": request, "venta": None, "horarios": horarios,"metodos_pagos": MetodoPago,"errors": errors, "form_data": form_data}
+            {"request": request, "venta": venta, "horarios": horarios,"metodos_pagos": MetodoPago,"errors": errors, "form_data": form_data}
         )
     
     try:
-        venta = Venta(
-            
-            horario_id =  horario_id_value,
-            precio_total =  precio_total_value,
-            cantidad = cantidad_value,
-            metodo_pago =  metodo_pago_value
-            )
+        # ACTUALIZAR la venta existente en lugar de crear una nueva
+        venta.horario_id = horario_id_value
+        venta.precio_total = precio_total_value
+        venta.cantidad = cantidad_value
+        venta.metodo_pago = metodo_pago_value
         
-        db.add(venta)
         db.commit()
         db.refresh(venta)
         
@@ -262,14 +259,9 @@ def update_venta(
     
     except Exception as e:
         db.rollback()
-        errors.append(f"Error al crear la venta: {str(e)}")
+        errors.append(f"Error al actualizar la venta: {str(e)}")
         
         return templates.TemplateResponse(
             "ventas/form.html",
-            {"request": request,"venta": None, "horarios": horarios, "metodos_pagos": MetodoPago, errors: errors, "form_data": form_data}
+            {"request": request,"venta": venta, "horarios": horarios, "metodos_pagos": MetodoPago, "errors": errors, "form_data": form_data}
         )
-    
-         
-    
-    
-    
