@@ -3,120 +3,127 @@
 
 from pydantic import BaseModel, ConfigDict, field_validator
 from typing import List, Optional, Any
-
+from app.schemas.genre import GenreResponse
 
 # Campos comunes que se comparten al crear y leer.
-class PeliculaBase(BaseModel):
+class PeliculaResponse(BaseModel):
+    model_config = ConfigDict(from_attributes=True)  # Traduce los atributos de SQLAlchemy para Pydantic
+    id: int
     titulo: str
     duracion: int
     disponible: bool
-    
-    # Campos opcionales
-    director: Optional[str] = None
-    descripcion: Optional[str] = None
-    trailer: Optional[str] = None
-    productora: Optional[str] = None
-    idioma: Optional[str] = None
-    vose: Optional[bool] = None
-    actores: Optional[List[str]] = None
+    genero_id: int
+    genero: GenreResponse 
 
 # --- Esquema de Creación (POST /peliculas) ---
 # Hereda de Base y añade campos necesarios solo al crear.
-class PeliculaCreate(PeliculaBase):
-    genero_id: int # Al crear, solo pasamos el ID del género
+class PeliculaCreate(BaseModel):
+    model_config = ConfigDict(from_attributes=True)  # Traduce los atributos de SQLAlchemy para Pydantic
+    
+    titulo: str
+    duracion: int
+    disponible: bool
+    genero_id: int
+    genero: GenreResponse
+    
+    
+    @field_validator("titulo")
+    @classmethod
+    def validate_titulo_not_empty(cls, v: str) -> str:
+        if not v or not v.strip():
+            raise ValueError("El titulo no puede estar vacío")
+        return v.strip()
+    
+    @field_validator("duracion")
+    @classmethod
+    def validate_duracion_positive(cls, v: int) -> int:
+        if v is None or v < 1:
+            raise ValueError("La duracion debe de ser positiva")
+        return v
+    
+    @field_validator("genero_id")
+    @classmethod
+    def validate_genero_id_positive(cls, v: int) -> int:
+        if v is None or v < 1:
+            raise ValueError("El id de genero debe ser un número positivo")
+        return v
+    
+    
 
 # --- Esquema de Actualización (PUT /peliculas/{id}) ---
 class PeliculaUpdate(BaseModel):
-    titulo: Optional[str] = None
-    duracion: Optional[int] = None
-    disponible: Optional[bool] = None
-    genero_id: Optional[int] = None
-    director: Optional[str] = None
-    descripcion: Optional[str] = None
-    trailer: Optional[str] = None
-    productora: Optional[str] = None
-    idioma: Optional[str] = None
-    vose: Optional[bool] = None
-    actores: Optional[List[str]] = None
-
-# --- Esquema de Lectura (GET /peliculas) ---
-# Hereda de Base y añade campos que se devuelven desde la BBDD.
-class PeliculaRead(PeliculaBase):
-    id: int
-    genero_id: int
+    model_config = ConfigDict(from_attributes=True)  # Traduce los atributos de SQLAlchemy para Pydantic
     
-    # Configuración para que Pydantic pueda leer desde el modelo ORM (SQLAlchemy)
-    model_config = ConfigDict(from_attributes=True)
-
-# Schema para lectura con género anidado)
-# Si quisieramos devolver el objeto género completo en lugar del ID:
-#
-# from .genero import GeneroRead # (Suponiendo que Kary crea este schema)
-#
-# class PeliculaReadWithGenero(PeliculaRead):
-#     genero: GeneroRead
-
-# Importar GeneroRead para el anidamiento
-from .genero import GeneroRead
- 
-class PeliculaReadWithGenero(PeliculaRead):
-    # Sobreescribe el campo de la base para incluir el objeto ORM cargado
-    genero: GeneroRead
-    
-# --- Esquema de Importación---
-# Se utiliza para validar las filas de datos recibidas en CSV/JSON antes de la inserción.
-class PeliculaImport(BaseModel):
-    # Campos requeridos para la inserción
     titulo: str
     duracion: int
-    disponible: bool = True # Asumimos que si no se indica, está disponible
+    disponible: bool
+    genero_id: int
+    genero: GenreResponse
     
-    # Relación por nombre de género (temporal para importación)
-    genero_nombre: str # Usaremos el nombre para buscar el ID
-
-    # Campos que deben coincidir con las columnas del CSV/JSON de exportación
-    director: Optional[str] = None
-    descripcion: Optional[str] = None
-    trailer: Optional[str] = None
-    productora: Optional[str] = None
-    idioma: Optional[str] = None
-    vose: bool = False
     
-    # Campo para manejar los actores (puede venir como cadena o como lista)
-    actores: Optional[Any] = None
-
-    # Validador para normalizar el campo 'actores' a una lista de strings
-    @field_validator('actores', mode='before')
+    
+    @field_validator("titulo")
     @classmethod
-    def split_actors_string(cls, v: Any) -> Optional[List[str]]:
-        """Convierte una cadena de actores separada por comas en una lista."""
-        if isinstance(v, str):
-            # Limpiar y dividir por coma. Filtrar strings vacías.
-            actors = [a.strip() for a in v.split(',') if a.strip()]
-            return actors if actors else None
-        # Si ya es una lista, o None, lo dejamos pasar.
-        if isinstance(v, list) or v is None:
-            return v
-        # Intentar forzar la conversión a string si es otro tipo, luego limpiar
-        if v:
-            return cls.split_actors_string(str(v))
-        return None
+    def validate_titulo_not_empty(cls, v: str) -> str:
+        if not v or not v.strip():
+            raise ValueError("El titulo no puede estar vacío")
+        return v.strip()
+    
+    @field_validator("duracion")
+    @classmethod
+    def validate_duracion_positive(cls, v: int) -> int:
+        if v is None or v < 1:
+            raise ValueError("La duracion debe de ser positiva")
+        return v
+    
+    @field_validator("genero_id")
+    @classmethod
+    def validate_genero_id_positive(cls, v: int) -> int:
+        if v is None or v < 1:
+            raise ValueError("El id de genero debe ser un número positivo")
+        return v
+    
+
+class PeliculaPatch(BaseModel):
+    model_config = ConfigDict(from_attributes=True)
+
+    titulo: str | None = None
+    duracion: int | None = None
+    disponible: bool | None = None
+    genero_id: int | None = None
+    
+
+    
+    @field_validator("titulo")
+    @classmethod
+    def validate_titulo_not_empty(cls, v: str | None) -> str | None:
+        if v is None:
+            return None
         
-    @field_validator('duracion', mode='before')
+        if not v or not v.strip():
+            raise ValueError("El titulo no puede estar vacio")
+        
+        return v.strip()
+    
+    @field_validator("duracion")
     @classmethod
-    def validate_duration(cls, v: Any) -> int:
-        """Asegura que la duración sea un número entero válido."""
-        if isinstance(v, str) and v.isdigit():
-            return int(v)
-        if isinstance(v, int):
-            return v
-        raise ValueError("La duración debe ser un número entero.")
-
-    @field_validator('disponible', 'vose', mode='before')
+    def validate_duracion_id_positive(cls, v: int | None) -> int | None:
+        if v is None:
+            return None
+        
+        if v < 1:
+            raise ValueError("El id de la pelicula debe ser un número positivo")
+        
+        return v
+    
+    
+    @field_validator("genero_id")
     @classmethod
-    def validate_boolean_field(cls, v: Any) -> bool:
-        """Normaliza los valores de verdad (como 'Sí' o 'No', 'True' o 'False') a booleano."""
-        if isinstance(v, str):
-            # Convertir 'Sí'/'sÍ', 'True'/'TRUE' a True
-            return v.strip().lower() in ['si', 'sí', 'true', '1']
-        return bool(v)
+    def validate_duracion_id_positive(cls, v: int | None) -> int | None:
+        if v is None:
+            return None
+        
+        if v < 1:
+            raise ValueError("El id del genero debe ser un número positivo")
+        
+        return v
