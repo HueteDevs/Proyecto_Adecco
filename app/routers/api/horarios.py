@@ -42,7 +42,7 @@ def find_by_id(id:int, db: Session = Depends(get_db)):
     return horario
 
 
-#POST - Crear un nuev horario
+#POST - Crear un nuevo horario
 @router.post("", response_model=HorarioResponse, status_code=status.HTTP_201_CREATED)
 def create(horario_dto: HorarioCreate, db: Session = Depends(get_db)):
 
