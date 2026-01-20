@@ -44,7 +44,9 @@ def create_pelicula(
     genero_id: str = Form(...),
     duracion: str = Form(...),
     disponible: str = Form(""),
+    imagen: str = Form(...),
     db: Session = Depends(get_db)
+    
 ):
     errors = []
     form_data = {
@@ -152,6 +154,7 @@ def update_pelicula(
     genero_id: str = Form(...),
     duracion: str = Form(...),
     disponible: str = Form(""),
+    imagen: str = Form(...),
     db: Session = Depends(get_db)
 ):
     errors = []

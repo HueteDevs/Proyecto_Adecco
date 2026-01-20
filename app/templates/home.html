@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="{{ request.url_for('static', path='bootstrap/css/bootstrap.min.css') }}">   
     <title>Claquet App</title>
-<head><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"></head> 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
 <body>
     <div class="container mt-5">
         <div class="row justify-content-center mb-5">
@@ -34,8 +35,70 @@
                 </div>
                 </div>
                 
-            </div><!--faltaría incorporar película... por el momento no es posible-->
+            </div>
         </div>
+
+        <!-- Sección de Últimas Películas -->
+        {% if peliculas %}
+        <div class="row justify-content-center mt-5 mb-5">
+            <div class="col-md-12">
+                <h2 class="mb-4">
+                    <i class="fa-solid fa-star"></i> Últimas películas añadidas
+                </h2>
+                <div class="row g-4">
+                    {% for pelicula in peliculas %}
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-3">
+                        <div class="card h-100 shadow-sm" style="overflow: hidden; transition: transform 0.3s;">
+                            {% if pelicula.imagen %}
+                            <img src="{{ pelicula.imagen }}" class="card-img-top" alt="{{ pelicula.titulo }}" style="height: 250px; object-fit: cover;">
+                            {% else %}
+                            <div class="card-img-top bg-secondary d-flex align-items-center justify-content-center" style="height: 250px;">
+                                <i class="fa-solid fa-film fa-5x text-white"></i>
+                            </div>
+                            {% endif %}
+                            <div class="card-body">
+                                <h5 class="card-title text-truncate" title="{{ pelicula.titulo }}">
+                                    {{ pelicula.titulo }}
+                                </h5>
+                                <div class="mb-2">
+                                    <small class="text-muted">
+                                        <strong>Género:</strong> 
+                                        {% if pelicula.genero %}
+                                            {{ pelicula.genero.nombre }}
+                                        {% else %}
+                                            N/A
+                                        {% endif %}
+                                    </small>
+                                </div>
+                                <div class="mb-2">
+                                    <small class="text-muted">
+                                        <strong>Duración:</strong> {{ pelicula.duracion }} min
+                                    </small>
+                                </div>
+                                <div class="mb-3">
+                                    {% if pelicula.disponible %}
+                                    <span class="badge bg-success">
+                                        <i class="fa-solid fa-check"></i> Disponible
+                                    </span>
+                                    {% else %}
+                                    <span class="badge bg-danger">
+                                        <i class="fa-solid fa-times"></i> No disponible
+                                    </span>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <div class="card-footer bg-white border-top">
+                                <a href="/peliculas/{{ pelicula.id }}" class="btn btn-sm btn-outline-primary w-100">
+                                    <i class="fa-solid fa-eye"></i> Ver detalles
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        {% endif %}
     </div>
     <script src="{{ request.url_for('static', path='bootstrap/js/bootstrap.bundle.min.js') }}"></script>   
 </body>

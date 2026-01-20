@@ -54,10 +54,10 @@ def init_db():
         
         
         default_peliculas = [
-            Pelicula(titulo="Regreso al Futuro", genero_id=2, duracion=103, disponible=False),
-            Pelicula(titulo="Frankenstein", genero_id=4, duracion=122, disponible=True),
-            Pelicula(titulo="Dragon ball Super: Broly", genero_id=5, duracion=102, disponible=True),
-            Pelicula(titulo="Atrapalo como Puedas", genero_id=2, duracion=98, disponible=True)
+            Pelicula(titulo="Regreso al Futuro", genero_id=2, duracion=103, disponible=False, imagen="https://pics.filmaffinity.com/back_to_the_future-100822308-large.jpg"),
+            Pelicula(titulo="Frankenstein", genero_id=4, duracion=122, disponible=True, imagen="https://m.media-amazon.com/images/M/MV5BYzYzNDYxMTQtMTU4OS00MTdlLThhMTQtZjI4NGJmMTZmNmRiXkEyXkFqcGc@._V1_.jpg"),
+            Pelicula(titulo="Dragon ball Super: Broly", genero_id=5, duracion=102, disponible=True, imagen ="https://pics.filmaffinity.com/doragon_boru_cho_burori-949664812-large.jpg"),
+            Pelicula(titulo="Atrapalo como Puedas", genero_id=2, duracion=98, disponible=True, imagen = "https://es.web.img2.acsta.net/img/56/dd/56dd4ecedfc32ef070bb4cc723ff01c1.jpg")
             
         ]
         db.add_all(default_peliculas)

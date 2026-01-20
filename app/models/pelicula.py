@@ -21,6 +21,7 @@ class Pelicula(Base):
     genero: Mapped["Genre"] = relationship("Genre")
     duracion: Mapped[int] = mapped_column(Integer, nullable=False) # int, no float
     disponible: Mapped[bool] = mapped_column(Boolean, default=True, nullable=False)
+    imagen: Mapped[str] = mapped_column(String(500), nullable=True)  # URL de la imagen
 
     
    
