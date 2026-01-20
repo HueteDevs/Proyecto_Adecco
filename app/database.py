@@ -39,18 +39,29 @@ def init_db():
     Sólo crea las cosas si no existen ya en la base de datos.
     """
     
-    from app.models import SalaORM, Horario, Genre, Venta, MetodoPago
+    from app.models import Pelicula, SalaORM, Horario, Genre, Venta, MetodoPago
     
     #crear todas las tablas
     Base.metadata.create_all(engine)
     
     db = SessionLocal()
     try:
-        existing_horarios = db.execute(select(Horario)).scalars().all()
+        existing_peliculas = db.execute(select(Pelicula)).scalars().all()
         
         
-        if existing_horarios:
+        if existing_peliculas:
             return
+        
+        
+        default_peliculas = [
+            Pelicula(titulo="Regreso al Futuro", genero_id=2, duracion=103, disponible=False),
+            Pelicula(titulo="Frankenstein", genero_id=4, duracion=122, disponible=True),
+            Pelicula(titulo="Dragon ball Super: Broly", genero_id=5, duracion=102, disponible=True),
+            Pelicula(titulo="Atrapalo como Puedas", genero_id=2, duracion=98, disponible=True)
+            
+        ]
+        db.add_all(default_peliculas)
+        db.commit() 
     
         
     

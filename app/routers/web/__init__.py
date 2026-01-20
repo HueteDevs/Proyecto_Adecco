@@ -10,15 +10,15 @@ from app.routers.web import genre
 from app.routers.web import horarios
 from app.routers.web import home
 from app.routers.web import salas
+from app.routers.web import peliculas
 
 from fastapi import APIRouter
 
 router = APIRouter()
 
 
-#router.include_router(pelicula.router)
+router.include_router(peliculas.router)
 router.include_router(salas.router)
-#router.include_router(venta.router)
 router.include_router(horarios.router)
 
 router.include_router(ventas.router)
