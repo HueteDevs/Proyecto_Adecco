@@ -1,6 +1,4 @@
-"""
-Configuración de la base de datos
-"""
+﻿"Configuración de la base de datos"
 from sqlalchemy import create_engine, select
 from sqlalchemy.orm import DeclarativeBase, sessionmaker
 
@@ -53,12 +51,11 @@ def init_db():
             return
         
         
-        default_peliculas = [
-            Pelicula(titulo="Regreso al Futuro", genero_id=2, duracion=103, disponible=False, imagen="https://pics.filmaffinity.com/back_to_the_future-100822308-large.jpg"),
-            Pelicula(titulo="Frankenstein", genero_id=4, duracion=122, disponible=True, imagen="https://m.media-amazon.com/images/M/MV5BYzYzNDYxMTQtMTU4OS00MTdlLThhMTQtZjI4NGJmMTZmNmRiXkEyXkFqcGc@._V1_.jpg"),
-            Pelicula(titulo="Dragon ball Super: Broly", genero_id=5, duracion=102, disponible=True, imagen ="https://pics.filmaffinity.com/doragon_boru_cho_burori-949664812-large.jpg"),
-            Pelicula(titulo="Atrapalo como Puedas", genero_id=2, duracion=98, disponible=True, imagen = "https://es.web.img2.acsta.net/img/56/dd/56dd4ecedfc32ef070bb4cc723ff01c1.jpg")
-            
+        default_peliculas= [
+            Pelicula(titulo="Dragon ball Super Broly", genero_id=1, duracion=120, disponible=True, imagen="https://m.media-amazon.com/images/I/81vIg0jh3EL._AC_UF1000,1000_QL80_.jpg"),
+            Pelicula(titulo="Agarralo como puedas", genero_id=2, duracion=90, disponible=True, imagen="https://m.media-amazon.com/images/M/MV5BNzI0MjNmZTgtNTAxZC00NzdmLWEwYTItOGMzMWE5MmFkOGIwXkEyXkFqcGc@._V1_.jpg"),
+            Pelicula(titulo="Regreso al Futuro", genero_id=1, duracion=116, disponible=True, imagen="https://pics.filmaffinity.com/Regreso_al_futuro-100822308-large.jpg"),
+            Pelicula(titulo="Frankestein", genero_id=3, duracion=135, disponible=True, imagen="https://m.media-amazon.com/images/M/MV5BYzYzNDYxMTQtMTU4OS00MTdlLThhMTQtZjI4NGJmMTZmNmRiXkEyXkFqcGc@._V1_.jpg"),
         ]
         db.add_all(default_peliculas)
         db.commit() 

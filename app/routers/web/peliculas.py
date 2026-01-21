@@ -44,7 +44,7 @@ def create_pelicula(
     genero_id: str = Form(...),
     duracion: str = Form(...),
     disponible: str = Form(""),
-    imagen: str = Form(...),
+    imagen: str = Form(""),  # Cambiar de Form(...) a Form("") para hacerlo opcional
     db: Session = Depends(get_db)
     
 ):
@@ -54,6 +54,7 @@ def create_pelicula(
         "genero_id": genero_id,
         "duracion": duracion,
         "disponible": disponible,
+        "imagen": imagen,  # Agregar imagen al form_data
     }
     
     generos = db.execute(select(Genre)).scalars().all()
@@ -100,11 +101,15 @@ def create_pelicula(
         )
 
     try:
+        # Procesar imagen: si está vacía, dejarla como None o cadena vacía
+        imagen_url = imagen.strip() if imagen and imagen.strip() else None
+        
         pelicula = Pelicula(
             titulo=titulo.strip(),
             genero_id=genero_id_value,
             duracion=duracion_value,
-            disponible=disponible_val
+            disponible=disponible_val,
+            imagen=imagen_url  # AGREGAR AQUÍ LA IMAGEN
         )
         db.add(pelicula)
         db.commit()
@@ -154,7 +159,7 @@ def update_pelicula(
     genero_id: str = Form(...),
     duracion: str = Form(...),
     disponible: str = Form(""),
-    imagen: str = Form(...),
+    imagen: str = Form(""),
     db: Session = Depends(get_db)
 ):
     errors = []
@@ -163,6 +168,7 @@ def update_pelicula(
         "genero_id": genero_id,
         "duracion": duracion,
         "disponible": disponible,
+        "imagen": imagen,
     }
     
     pelicula = db.execute(
@@ -222,6 +228,7 @@ def update_pelicula(
         pelicula.genero_id = genero_id_value
         pelicula.duracion = duracion_value
         pelicula.disponible = disponible_val
+        pelicula.imagen = imagen.strip() if imagen and imagen.strip() else None
         
         db.commit()
         db.refresh(pelicula)

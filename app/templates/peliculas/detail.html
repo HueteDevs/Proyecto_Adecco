@@ -20,6 +20,15 @@
                     </div>
 
                     <div class="card-body">
+                        <div class="text-center mb-4">
+                            {% if pelicula.imagen %}
+                                <img src="{{ pelicula.imagen }}" alt="{{ pelicula.titulo }}" class="img-fluid rounded" style="max-height: 300px; object-fit: cover;">
+                            {% else %}
+                                <div class="bg-secondary text-white d-flex align-items-center justify-content-center rounded" style="width: 100%; height: 300px;">
+                                    <i class="fas fa-image" style="font-size: 3rem;"></i>
+                                </div>
+                            {% endif %}
+                        </div>
                         <div class="mb-3">
                             <h5 class="text-body-secondary">ID: {{ pelicula.id }}</h5>
                         </div>
@@ -27,13 +36,25 @@
                             <h5 class="text-body-secondary">Titulo: {{ pelicula.titulo }}</h5> 
                         </div>
                         <div class="mb-3">
-                            <h5 class="text-body-secondary">genero_id: {{ pelicula.genero_id }}</h5>       
+                            <h5 class="text-body-secondary">Género: 
+                                {% if pelicula.genero %}
+                                    {{ pelicula.genero.name_genre }}
+                                {% else %}
+                                    No disponible
+                                {% endif %}
+                            </h5>       
                         </div>
                         <div class="mb-3">
-                            <h5 class="text-body-secondary">duracion: {{ pelicula.duracion }}</h5>
+                            <h5 class="text-body-secondary">Duración: {{ pelicula.duracion }} minutos</h5>
                         </div>
                         <div class="mb-3">
-                            <h5 class="text-body-secondary">disponible: {{ pelicula.disponible }}</h5>
+                            <h5 class="text-body-secondary">Disponible: 
+                                {% if pelicula.disponible %}
+                                    <span class="badge bg-success">Sí</span>
+                                {% else %}
+                                    <span class="badge bg-danger">No</span>
+                                {% endif %}
+                            </h5>
                         </div>
                     </div> 
                     
