@@ -50,17 +50,24 @@
 
                             <div class="mb-3">
                                 <label for="genero_id" class="form-label">Género <span class="text-danger">*</span></label>
-                                <input
-                                    type="number"
+                                <select
                                     class="form-control"
                                     id="genero_id"
                                     name="genero_id"
-                                    value="{% if form_data %}{{ form_data.get('genero_id', '') }}{% elif pelicula %}{{ pelicula.genero_id }}{% endif %}"
                                     required
-                                    min="1"
                                 >
-                                <div class="form-text">El id del género es obligatorio</div>
-                            </div>
+                                <option value="">-- Selecciona un género --</option>
+                                {% for genero in generos %}
+                                <option 
+                                    value="{{ genero.id }}"
+                                    {% if form_data and form_data.get('genero_id') == genero.id|string %}selected{% elif pelicula and pelicula.genero_id == genero.id %}selected{% endif %}
+                        >
+                                    {{ genero.name_genre }}
+                            </option>
+                        {% endfor %}
+    </select>
+    <div class="form-text">El género es obligatorio</div>
+</div>
 
                             <div class="mb-3">
                                 <label for="duracion" class="form-label">Duración (minutos)<span class="text-danger">*</span></label>

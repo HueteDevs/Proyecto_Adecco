@@ -22,6 +22,7 @@
                     <th>ID</th>
                     <th>Titulo</th>
                     <th>Genero_ID</th>
+                    <th>Genero</th>
                     <th>Duracion</th>
                     <th>Disponibilidad</th>
                 </tr>
@@ -32,6 +33,7 @@
                     <td>{{ pelicula.id }}</td>
                     <td>{{ pelicula.titulo }}</td>
                     <td>{{ pelicula.genero_id }}</td>
+                    <td>{{ pelicula.genero.name_genre }}</td>
                     <td>{{ pelicula.duracion}}</td>
                     <td>
                         {% if pelicula.disponible is none %}

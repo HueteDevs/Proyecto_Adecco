@@ -265,3 +265,17 @@ def update_venta(
             "ventas/form.html",
             {"request": request,"venta": venta, "horarios": horarios, "metodos_pagos": MetodoPago, "errors": errors, "form_data": form_data}
         )
+        
+    
+@router.post("/{venta_id}/delete", response_class=HTMLResponse)
+def delete_venta(request: Request, venta_id: int, db: Session = Depends(get_db)):
+    venta = db.execute(select(Venta).where(Venta.id == venta_id)).scalar_one_or_none()
+    if venta is None:
+        raise HTTPException(status_code=404, detail="Venta no encontrada")
+    try:
+        db.delete(venta)
+        db.commit()
+        return RedirectResponse("/ventas", status_code=303)
+    except Exception as e:
+        db.rollback()
+        raise HTTPException(status_code=500, detail=f"Error al eliminar la venta: {str(e)}")
